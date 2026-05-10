@@ -1,0 +1,297 @@
+/* PendingRequestsTable.module.css */
+
+.wrapper {
+  background: #FFFFFF;
+  border-radius: 12px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+/* ── Título de sección ──────────────────────────────────────────────────────── */
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1E293B;
+  padding: 20px 24px 16px;
+  margin: 0;
+  border-bottom: 1px solid #E2E8F0;
+}
+
+.countBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 11px;
+  background: #DBEAFE;
+  color: #1E40AF;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* ── Contenedor con scroll horizontal ──────────────────────────────────────── */
+.tableContainer {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ── Tabla ──────────────────────────────────────────────────────────────────── */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.th {
+  background: #1E3A8A;
+  color: #FFFFFF;
+  padding: 14px 16px;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  user-select: none;
+  height: 48px;
+}
+
+.thSortable {
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.thSortable:hover {
+  background: #1D4ED8;
+}
+
+.sortIcon {
+  opacity: 0.7;
+  font-size: 11px;
+}
+
+.tr {
+  animation: rowIn 0.3s ease both;
+  transition: background 0.15s ease, opacity 0.3s ease;
+}
+
+.tr:nth-child(even) {
+  background: #F8FAFC;
+}
+
+.tr:hover {
+  background: #EFF6FF;
+}
+
+.trProcessing {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.td {
+  padding: 14px 16px;
+  color: #334155;
+  border-bottom: 1px solid #E2E8F0;
+  vertical-align: middle;
+  height: 56px;
+}
+
+/* ── Badge de estado ────────────────────────────────────────────────────────── */
+.estadoBadge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* ── Acciones ───────────────────────────────────────────────────────────────── */
+.acciones {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.btnAprobar,
+.btnRechazar {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+  white-space: nowrap;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+.btnAprobar {
+  background: #10B981;
+  color: #FFFFFF;
+}
+
+.btnAprobar:hover:not(:disabled) {
+  transform: scale(1.04);
+  filter: brightness(0.92);
+}
+
+.btnRechazar {
+  background: #EF4444;
+  color: #FFFFFF;
+}
+
+.btnRechazar:hover:not(:disabled) {
+  transform: scale(1.04);
+  filter: brightness(0.92);
+}
+
+.btnAprobar:disabled,
+.btnRechazar:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ── Skeleton rows ──────────────────────────────────────────────────────────── */
+.skeletonRow td {
+  padding: 14px 16px;
+  height: 56px;
+}
+
+.skeletonCell {
+  height: 16px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #E2E8F0 25%, #F1F5F9 50%, #E2E8F0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+/* ── Estado vacío ───────────────────────────────────────────────────────────── */
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 56px 32px;
+  gap: 12px;
+  text-align: center;
+}
+
+.emptyTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #475569;
+  margin: 0;
+}
+
+.emptySubtitle {
+  font-size: 14px;
+  color: #94A3B8;
+  max-width: 360px;
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* ── Modal de confirmación ──────────────────────────────────────────────────── */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 500;
+  animation: fadeIn 0.2s ease both;
+  padding: 20px;
+}
+
+.modal {
+  background: #FFFFFF;
+  border-radius: 16px;
+  padding: 32px 28px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.18);
+  text-align: center;
+  animation: scaleIn 0.25s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.modalIcon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+}
+
+.iconGreen { background: #DCFCE7; color: #10B981; }
+.iconRed   { background: #FEE2E2; color: #EF4444; }
+
+.modalTitle {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1E293B;
+  margin: 0 0 10px;
+}
+
+.modalBody {
+  font-size: 14px;
+  color: #64748B;
+  margin: 0 0 24px;
+  line-height: 1.6;
+}
+
+.modalActions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.btnCancelar {
+  flex: 1;
+  height: 40px;
+  border: 1.5px solid #CBD5E1;
+  border-radius: 8px;
+  background: #FFFFFF;
+  color: #475569;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s ease;
+}
+
+.btnCancelar:hover {
+  background: #F8FAFC;
+}
+
+/* ── Keyframes ──────────────────────────────────────────────────────────────── */
+@keyframes rowIn {
+  from { opacity: 0; transform: translateX(-8px); }
+  to   { opacity: 1; transform: translateX(0);    }
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to   { opacity: 1; transform: scale(1);   }
+}

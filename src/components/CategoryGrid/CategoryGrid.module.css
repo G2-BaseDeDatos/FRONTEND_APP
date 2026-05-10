@@ -1,0 +1,129 @@
+/* CategoryGrid.module.css */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+/* ── Celda ──────────────────────────────────────────────────────────────────── */
+.cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 28px 20px;
+  background: #FFFFFF;
+  border-radius: 12px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.06);
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  font-family: inherit;
+  text-align: center;
+  transition: transform 0.2s ease,
+              box-shadow 0.2s ease,
+              border-color 0.2s ease;
+
+  animation: fadeInUp 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.cell:hover {
+  border-color: #60A5FA;
+  box-shadow: 0px 6px 20px rgba(59, 130, 246, 0.15);
+  transform: translateY(-3px);
+}
+
+.cell:focus-visible {
+  outline: 2px solid #3B82F6;
+  outline-offset: 2px;
+}
+
+/* ── Icono ──────────────────────────────────────────────────────────────────── */
+.iconWrapper {
+  width: 60px;
+  height: 60px;
+  border-radius: 14px;
+  background: var(--icon-bg, #EFF6FF);
+  color: var(--icon-color, #3B82F6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.cell:hover .iconWrapper {
+  transform: scale(1.1);
+}
+
+/* ── Label ──────────────────────────────────────────────────────────────────── */
+.label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #334155;
+  line-height: 1.4;
+}
+
+/* ── Skeleton ───────────────────────────────────────────────────────────────── */
+.skeleton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 28px 20px;
+  background: #FFFFFF;
+  border-radius: 12px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.skeletonIcon {
+  width: 60px;
+  height: 60px;
+  border-radius: 14px;
+  background: linear-gradient(90deg, #E2E8F0 25%, #F1F5F9 50%, #E2E8F0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+.skeletonLabel {
+  width: 80px;
+  height: 14px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #E2E8F0 25%, #F1F5F9 50%, #E2E8F0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+/* ── Estado vacío ───────────────────────────────────────────────────────────── */
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 40px;
+  color: #94A3B8;
+  font-size: 14px;
+}
+
+.empty p { margin: 0; }
+
+/* ── Keyframes ──────────────────────────────────────────────────────────────── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 640px) {
+  .grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .cell { padding: 20px 14px; }
+}

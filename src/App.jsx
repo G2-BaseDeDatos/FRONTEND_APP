@@ -1,122 +1,137 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider, useAuth } from './context/AuthContext';
+import Login                from './pages/Login/Login';
+import AdminDashboardPage   from './pages/Dashboard/DashboardAdmin';
+import DashboardDocente     from './pages/Dashboard/DashboardDocente';
+import DashboardEstudiante  from './pages/Dashboard/DashboardEstudiante';
 
-function App() {
-  const [count, setCount] = useState(0)
-
+// ──────────────────────────────────────────────────────────────────────────────
+// Placeholder genérico para módulos futuros del panel de administrador.
+// Sustituir por los componentes reales conforme se desarrollen.
+// ──────────────────────────────────────────────────────────────────────────────
+function ModuloPlaceholder({ nombre }) {
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+    <div style={{
+      flex: 1, display: 'flex', flexDirection: 'column',
+      alignItems: 'center', justifyContent: 'center',
+      padding: '40px', gap: '12px', color: '#475569',
+      fontFamily: 'Inter, system-ui, sans-serif',
+    }}>
+      <div style={{
+        width: 64, height: 64, borderRadius: 16,
+        background: '#DBEAFE', display: 'flex',
+        alignItems: 'center', justifyContent: 'center',
+        fontSize: 28,
+      }}>🔧</div>
+      <h2 style={{ margin: 0, color: '#1E3A8A', fontSize: 20, fontWeight: 700 }}>
+        Módulo: {nombre}
+      </h2>
+      <p style={{ margin: 0, fontSize: 14, color: '#94A3B8', textAlign: 'center', maxWidth: 340 }}>
+        Este módulo está en desarrollo. Estará disponible próximamente.
+      </p>
+    </div>
+  );
 }
 
-export default App
+/**
+ * Ruta protegida — redirige al login si no hay sesión activa.
+ */
+function RutaProtegida({ children }) {
+  const { estaAutenticado } = useAuth();
+  return estaAutenticado ? children : <Navigate to="/login" replace />;
+}
+
+/**
+ * Ruta pública — redirige al dashboard si ya hay sesión.
+ */
+function RutaPublica({ children }) {
+  const { estaAutenticado, usuario } = useAuth();
+  if (!estaAutenticado) return children;
+  const rutas = {
+    Administrador: '/dashboard/admin',
+    Docente:       '/dashboard/docente',
+    Estudiante:    '/dashboard/estudiante',
+  };
+  const destino = (usuario?.rol && rutas[usuario.rol]) || '/dashboard/admin';
+  return <Navigate to={destino} replace />;
+}
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          {/* ── Raíz → Login ──────────────────────────────────────────── */}
+          <Route path="/" element={<Navigate to="/login" replace />} />
+
+          {/* ── Login (público) ───────────────────────────────────────── */}
+          <Route
+            path="/login"
+            element={<RutaPublica><Login /></RutaPublica>}
+          />
+
+          {/* ──────────────────────────────────────────────────────────── */}
+          {/* PANEL ADMINISTRADOR                                          */}
+          {/* Layout: AdminDashboardPage envuelve todas las sub-rutas.    */}
+          {/* Las rutas hijas usan <Outlet /> en AdminDashboardPage.       */}
+          {/* ──────────────────────────────────────────────────────────── */}
+          <Route
+            path="/dashboard/admin"
+            element={
+              <RutaProtegida>
+                <AdminDashboardPage />
+              </RutaProtegida>
+            }
+          >
+            {/* Sub-rutas de módulos (placeholders, reemplazar con componentes reales) */}
+            {/* Ruta: /dashboard/admin/inventario */}
+            <Route path="inventario"    element={<ModuloPlaceholder nombre="Inventario" />} />
+            {/* Ruta: /dashboard/admin/prestamos */}
+            <Route path="prestamos"     element={<ModuloPlaceholder nombre="Préstamos" />} />
+            {/* Ruta: /dashboard/admin/mantenimiento */}
+            <Route path="mantenimiento" element={<ModuloPlaceholder nombre="Mantenimiento" />} />
+            {/* Ruta: /dashboard/admin/movimientos */}
+            <Route path="movimientos"   element={<ModuloPlaceholder nombre="Movimientos" />} />
+            {/* Ruta: /dashboard/admin/usuarios */}
+            <Route path="usuarios"      element={<ModuloPlaceholder nombre="Usuarios" />} />
+            {/* Ruta: /dashboard/admin/categorias */}
+            <Route path="categorias"    element={<ModuloPlaceholder nombre="Categorías" />} />
+            {/* Ruta: /dashboard/admin/ubicaciones */}
+            <Route path="ubicaciones"   element={<ModuloPlaceholder nombre="Ubicaciones" />} />
+          </Route>
+
+          {/* ──────────────────────────────────────────────────────────── */}
+          {/* PANEL DOCENTE                                                */}
+          {/* Layout: TeacherDashboardPage con navbar horizontal.         */}
+          {/* ──────────────────────────────────────────────────────────── */}
+          <Route
+            path="/dashboard/docente"
+            element={<RutaProtegida><DashboardDocente /></RutaProtegida>}
+          >
+            {/* Ruta: /dashboard/docente/prestamos → mis préstamos (futuro) */}
+            <Route path="prestamos"          element={<ModuloPlaceholder nombre="Mis Préstamos" />} />
+            {/* Ruta: /dashboard/docente/catalogo  → catálogo de equipos */}
+            <Route path="catalogo"           element={<ModuloPlaceholder nombre="Catálogo de Equipos" />} />
+            {/* Ruta: /dashboard/docente/articulo/:id → detalle de artículo */}
+            <Route path="articulo/:id"       element={<ModuloPlaceholder nombre="Detalle del Artículo" />} />
+          </Route>
+          {/* ──────────────────────────────────────────────────────────── */}
+          {/* PANEL ESTUDIANTE                                             */}
+          {/* ──────────────────────────────────────────────────────────── */}
+          <Route
+            path="/dashboard/estudiante"
+            element={<RutaProtegida><DashboardEstudiante /></RutaProtegida>}
+          >
+            <Route path="mis-prestamos" element={<ModuloPlaceholder nombre="Mis Préstamos" />} />
+            <Route path="catalogo"      element={<ModuloPlaceholder nombre="Catálogo" />} />
+            <Route path="articulo/:id"  element={<ModuloPlaceholder nombre="Detalle del Artículo" />} />
+          </Route>
+
+          {/* ── Fallbacks ─────────────────────────────────────────────── */}
+          <Route path="/dashboard" element={<Navigate to="/login" replace />} />
+          <Route path="*"          element={<Navigate to="/login" replace />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
+  );
+}

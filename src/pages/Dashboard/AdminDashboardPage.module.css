@@ -1,0 +1,181 @@
+/* AdminDashboardPage.module.css */
+
+/* ── Layout principal: sidebar | columna derecha ──────────────────────────── */
+.layout {
+  display: flex;
+  min-height: 100vh;
+  background: #F0F4FF;
+}
+
+.mainColumn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0; /* evita overflow en flex */
+}
+
+/* ── Contenido principal ────────────────────────────────────────────────────── */
+.content {
+  flex: 1;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+/* ── Banner de error ────────────────────────────────────────────────────────── */
+.errorBanner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #FEF2F2;
+  border: 1px solid #FECACA;
+  border-radius: 10px;
+  padding: 12px 16px;
+  color: #DC2626;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.reintentarBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  background: none;
+  border: 1.5px solid #DC2626;
+  border-radius: 6px;
+  padding: 4px 10px;
+  color: #DC2626;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s ease;
+}
+
+.reintentarBtn:hover {
+  background: #FEE2E2;
+}
+
+/* ── Sección de tabla ───────────────────────────────────────────────────────── */
+.tableSection {
+  animation: sectionIn 0.4s ease both;
+}
+
+/* ── Resumen de artículos ───────────────────────────────────────────────────── */
+.resumenWrapper {
+  background: #FFFFFF;
+  border-radius: 12px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  animation: sectionIn 0.5s ease both;
+}
+
+.resumenHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid #E2E8F0;
+}
+
+.resumenTitulo {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1E293B;
+  margin: 0;
+}
+
+.resumenMeta {
+  font-size: 13px;
+  color: #94A3B8;
+}
+
+.resumenTableContainer {
+  overflow-x: auto;
+}
+
+.resumenTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.rth {
+  background: #1E3A8A;
+  color: #FFFFFF;
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  white-space: nowrap;
+}
+
+.rtr {
+  transition: background 0.12s ease;
+}
+
+.rtr:hover {
+  background: #EFF6FF;
+}
+
+.rtrAlt {
+  background: #F8FAFC;
+}
+
+.rtrAlt:hover {
+  background: #EFF6FF;
+}
+
+.rtd {
+  padding: 12px 16px;
+  color: #334155;
+  border-bottom: 1px solid #E2E8F0;
+  white-space: nowrap;
+  vertical-align: middle;
+  height: 52px;
+}
+
+.estadoBadge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* ── Mobile overlay ─────────────────────────────────────────────────────────── */
+.mobileOverlay {
+  display: none;
+}
+
+/* ── Animaciones ────────────────────────────────────────────────────────────── */
+@keyframes sectionIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .content {
+    padding: 20px 16px;
+    gap: 20px;
+  }
+
+  .mobileOverlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.45);
+    z-index: 99;
+  }
+}
+
+@media (max-width: 480px) {
+  .content {
+    padding: 16px 12px;
+  }
+}

@@ -1,0 +1,316 @@
+/* TeacherNavbar.module.css */
+
+.navbar {
+  background: #FFFFFF;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 90;
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+}
+
+.inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  padding: 0 32px;
+}
+
+/* ── Logo ────────────────────────────────────────────────────────────────── */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.logoIcon {
+  width: 32px;
+  height: 32px;
+  background: #EFF6FF;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logoText {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1E3A8A;
+  white-space: nowrap;
+}
+
+/* ── Nav desktop ─────────────────────────────────────────────────────────── */
+.navDesktop {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+}
+
+.navLink {
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #475569;
+  text-decoration: none;
+  transition: color 0.18s ease, background 0.18s ease;
+  white-space: nowrap;
+}
+
+.navLink:hover {
+  color: #1E3A8A;
+  background: #EFF6FF;
+}
+
+.navLinkActive {
+  color: #1E3A8A !important;
+  background: #DBEAFE !important;
+  font-weight: 600;
+}
+
+/* ── Derecha ─────────────────────────────────────────────────────────────── */
+.right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+/* Campana */
+.bellBtn {
+  background: none;
+  border: none;
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #475569;
+  position: relative;
+  transition: background 0.18s ease, color 0.18s ease;
+}
+
+.bellBtn:hover { background: #F1F5F9; color: #1E293B; }
+
+.bellIcon {
+  animation: balanceo 0.6s ease 0.5s 1;
+}
+
+.bellBadge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #EF4444;
+  border: 2px solid #FFFFFF;
+}
+
+/* Perfil */
+.profileWrapper { position: relative; }
+
+.profileBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  border-radius: 8px;
+  padding: 4px 8px;
+  cursor: pointer;
+  transition: background 0.18s ease;
+}
+
+.profileBtn:hover { background: #F1F5F9; }
+
+.avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1E3A8A, #3B82F6);
+  border: 2px solid #3B82F6;
+  color: #FFFFFF;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.profileName {
+  font-size: 14px;
+  font-weight: 500;
+  color: #1E293B;
+  white-space: nowrap;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chevron { color: #64748B; transition: transform 0.2s ease; }
+.chevronOpen { transform: rotate(180deg); }
+
+/* Dropdown */
+.dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 220px;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.10);
+  overflow: hidden;
+  animation: dropDown 0.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+  z-index: 200;
+}
+
+.dropdownHeader {
+  padding: 14px 16px 10px;
+}
+
+.dropdownName {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1E293B;
+  margin: 0 0 2px;
+}
+
+.dropdownRole {
+  font-size: 11px;
+  color: #3B82F6;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 2px;
+}
+
+.dropdownEmail {
+  font-size: 12px;
+  color: #64748B;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.divider { border: none; border-top: 1px solid #E2E8F0; margin: 0; }
+
+.dropdownItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 16px;
+  background: none;
+  border: none;
+  font-size: 14px;
+  color: #334155;
+  cursor: pointer;
+  font-family: inherit;
+  text-align: left;
+  transition: background 0.15s ease;
+}
+
+.dropdownItem:hover { background: #F8FAFC; }
+
+.dropdownLogout { color: #DC2626; }
+.dropdownLogout:hover { background: #FEF2F2; }
+
+/* Hamburguesa móvil */
+.menuMovilBtn {
+  display: none;
+  background: none;
+  border: none;
+  color: #475569;
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.18s ease;
+}
+
+.menuMovilBtn:hover { background: #F1F5F9; }
+
+/* Menú móvil */
+.navMovil {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid #E2E8F0;
+  padding: 8px 16px 16px;
+  animation: slideDown 0.22s ease both;
+}
+
+.navMovilLink {
+  padding: 10px 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #475569;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.navMovilLink:hover { background: #F8FAFC; color: #1E3A8A; }
+.navMovilLinkActive { color: #1E3A8A; background: #EFF6FF; }
+
+.navMovilLogout {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 10px 12px;
+  border: none;
+  background: none;
+  color: #DC2626;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+  border-radius: 6px;
+  transition: background 0.15s ease;
+}
+
+.navMovilLogout:hover { background: #FEF2F2; }
+
+/* ── Keyframes ────────────────────────────────────────────────────────────── */
+@keyframes dropDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0);     }
+}
+
+@keyframes balanceo {
+  0%, 100% { transform: rotate(0deg);    }
+  20%       { transform: rotate(12deg);  }
+  40%       { transform: rotate(-10deg); }
+  60%       { transform: rotate(8deg);   }
+  80%       { transform: rotate(-6deg);  }
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .inner { padding: 0 16px; gap: 12px; }
+  .navDesktop { display: none; }
+  .menuMovilBtn { display: flex; }
+  .profileName { display: none; }
+  .logoText { font-size: 13px; }
+}
