@@ -186,12 +186,14 @@ export default function AdminDashboardPage() {
 // Útil como vista rápida desde el dashboard antes de navegar al módulo completo.
 
 function ResumenArticulos({ articulos }) {
-  const preview = articulos.slice(0, 10);
+  // Se asume que ID_ART o la inserción determinan el orden, los más recientes al final.
+  // Invertimos y tomamos los últimos 5.
+  const preview = [...articulos].reverse().slice(0, 5);
   return (
     <div className={styles.resumenWrapper}>
       <div className={styles.resumenHeader}>
         <h2 className={styles.resumenTitulo}>Artículos Recientes</h2>
-        <span className={styles.resumenMeta}>Mostrando {preview.length} de {articulos.length}</span>
+        <span className={styles.resumenMeta}>Mostrando los 5 más recientes (Total: {articulos.length})</span>
       </div>
       <div className={styles.resumenTableContainer}>
         <table className={styles.resumenTable} aria-label="Resumen de artículos del inventario">
