@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Login                from './pages/Login/Login';
 import AdminDashboardPage   from './pages/Dashboard/DashboardAdmin';
+import UsuariosPage         from './pages/Usuarios/UsuariosPage';
 import DashboardDocente     from './pages/Dashboard/DashboardDocente';
 import DashboardEstudiante  from './pages/Dashboard/DashboardEstudiante';
 
@@ -93,7 +94,7 @@ export default function App() {
             {/* Ruta: /dashboard/admin/movimientos */}
             <Route path="movimientos"   element={<ModuloPlaceholder nombre="Movimientos" />} />
             {/* Ruta: /dashboard/admin/usuarios */}
-            <Route path="usuarios"      element={<ModuloPlaceholder nombre="Usuarios" />} />
+            <Route path="usuarios"      element={<UsuariosPage />} />
             {/* Ruta: /dashboard/admin/categorias */}
             <Route path="categorias"    element={<ModuloPlaceholder nombre="Categorías" />} />
             {/* Ruta: /dashboard/admin/ubicaciones */}
