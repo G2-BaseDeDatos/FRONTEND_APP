@@ -3,6 +3,7 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import Login                from './pages/Login/Login';
 import AdminDashboardPage   from './pages/Dashboard/DashboardAdmin';
 import UsuariosPage         from './pages/Usuarios/UsuariosPage';
+import InventarioPage       from './pages/Inventario/InventarioPage';
 import DashboardDocente     from './pages/Dashboard/DashboardDocente';
 import DashboardEstudiante  from './pages/Dashboard/DashboardEstudiante';
 
@@ -84,9 +85,9 @@ export default function App() {
               </RutaProtegida>
             }
           >
-            {/* Sub-rutas de módulos (placeholders, reemplazar con componentes reales) */}
+            {/* Sub-rutas de módulos */}
             {/* Ruta: /dashboard/admin/inventario */}
-            <Route path="inventario"    element={<ModuloPlaceholder nombre="Inventario" />} />
+            <Route path="inventario"    element={<InventarioPage />} />
             {/* Ruta: /dashboard/admin/prestamos */}
             <Route path="prestamos"     element={<ModuloPlaceholder nombre="Préstamos" />} />
             {/* Ruta: /dashboard/admin/mantenimiento */}
