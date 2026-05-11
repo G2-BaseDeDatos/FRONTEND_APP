@@ -4,6 +4,8 @@ import Login                from './pages/Login/Login';
 import AdminDashboardPage   from './pages/Dashboard/DashboardAdmin';
 import UsuariosPage         from './pages/Usuarios/UsuariosPage';
 import InventarioPage       from './pages/Inventario/InventarioPage';
+import PrestamosPage        from './pages/Prestamos/PrestamosPage';
+import MantenimientoPage    from './pages/Mantenimiento/MantenimientoPage';
 import DashboardDocente     from './pages/Dashboard/DashboardDocente';
 import DashboardEstudiante  from './pages/Dashboard/DashboardEstudiante';
 
@@ -89,9 +91,9 @@ export default function App() {
             {/* Ruta: /dashboard/admin/inventario */}
             <Route path="inventario"    element={<InventarioPage />} />
             {/* Ruta: /dashboard/admin/prestamos */}
-            <Route path="prestamos"     element={<ModuloPlaceholder nombre="Préstamos" />} />
+            <Route path="prestamos"     element={<PrestamosPage />} />
             {/* Ruta: /dashboard/admin/mantenimiento */}
-            <Route path="mantenimiento" element={<ModuloPlaceholder nombre="Mantenimiento" />} />
+            <Route path="mantenimiento" element={<MantenimientoPage />} />
             {/* Ruta: /dashboard/admin/movimientos */}
             <Route path="movimientos"   element={<ModuloPlaceholder nombre="Movimientos" />} />
             {/* Ruta: /dashboard/admin/usuarios */}
