@@ -1,4 +1,4 @@
-import { Package, CheckCircle, ArrowLeftRight, Wrench } from 'lucide-react';
+import { Package, CheckCircle, ArrowLeftRight, Wrench, Trash2 } from 'lucide-react';
 import styles from './KPICards.module.css';
 
 // ──────────────────────────────────────────────────────────────────────────────
@@ -34,6 +34,13 @@ const KPI_CONFIG = [
     icon:    Wrench,
     color:   '#F59E0B',
     bgIcon:  '#FFFBEB',
+  },
+  {
+    key:     'baja',
+    label:   'Dados de Baja',
+    icon:    Trash2,
+    color:   '#EF4444',
+    bgIcon:  '#FEF2F2',
   },
 ];
 

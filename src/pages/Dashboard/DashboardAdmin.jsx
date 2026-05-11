@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useNavigate, Outlet } from 'react-router-dom';
+import { useNavigate, Outlet, useLocation } from 'react-router-dom';
 import { AlertCircle, RefreshCw } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import Sidebar      from '../../components/Sidebar/Sidebar';
@@ -38,6 +38,8 @@ import { ESTADO_COLORES } from '../../constants/theme';
 export default function AdminDashboardPage() {
   const { usuario, estaAutenticado, cerrarSesion } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const isOverview = location.pathname === '/dashboard/admin' || location.pathname === '/dashboard/admin/';
 
   // ── Estado ────────────────────────────────────────────────────────────────
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -134,10 +136,11 @@ export default function AdminDashboardPage() {
         {/* Navbar superior */}
         <TopNavbar onMenuToggle={toggleSidebar} pageTitle="Dashboard" />
 
-        {/* Contenido */}
-        <main className={styles.content} id="main-content">
+        {/* Contenido Principal */}
+        {isOverview ? (
+          <main className={styles.content} id="main-content">
 
-          {/* Banner de error global */}
+            {/* Banner de error global */}
           {errorGlobal && (
             <div className={styles.errorBanner} role="alert">
               <AlertCircle size={18} aria-hidden="true" />
@@ -171,10 +174,13 @@ export default function AdminDashboardPage() {
             </section>
           )}
 
-        </main>
-
-        {/* Outlet para sub-rutas de módulos (Inventario, Usuarios, etc.) */}
-        <Outlet />
+          </main>
+        ) : (
+          <main className={styles.content} id="main-content">
+            {/* Outlet para sub-rutas de módulos (Inventario, Usuarios, etc.) */}
+            <Outlet />
+          </main>
+        )}
 
       </div>
     </div>
@@ -186,12 +192,14 @@ export default function AdminDashboardPage() {
 // Útil como vista rápida desde el dashboard antes de navegar al módulo completo.
 
 function ResumenArticulos({ articulos }) {
-  const preview = articulos.slice(0, 10);
+  // Se asume que ID_ART o la inserción determinan el orden, los más recientes al final.
+  // Invertimos y tomamos los últimos 5.
+  const preview = [...articulos].reverse().slice(0, 5);
   return (
     <div className={styles.resumenWrapper}>
       <div className={styles.resumenHeader}>
         <h2 className={styles.resumenTitulo}>Artículos Recientes</h2>
-        <span className={styles.resumenMeta}>Mostrando {preview.length} de {articulos.length}</span>
+        <span className={styles.resumenMeta}>Mostrando los 5 más recientes (Total: {articulos.length})</span>
       </div>
       <div className={styles.resumenTableContainer}>
         <table className={styles.resumenTable} aria-label="Resumen de artículos del inventario">

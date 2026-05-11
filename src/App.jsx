@@ -2,6 +2,13 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Login                from './pages/Login/Login';
 import AdminDashboardPage   from './pages/Dashboard/DashboardAdmin';
+import UsuariosPage         from './pages/Usuarios/UsuariosPage';
+import InventarioPage       from './pages/Inventario/InventarioPage';
+import PrestamosPage        from './pages/Prestamos/PrestamosPage';
+import MantenimientoPage    from './pages/Mantenimiento/MantenimientoPage';
+import MovimientosPage      from './pages/Movimientos/MovimientosPage';
+import CategoriasPage       from './pages/Categorias/CategoriasPage';
+import UbicacionesPage      from './pages/Ubicaciones/UbicacionesPage';
 import DashboardDocente     from './pages/Dashboard/DashboardDocente';
 import DashboardEstudiante  from './pages/Dashboard/DashboardEstudiante';
 
@@ -83,21 +90,21 @@ export default function App() {
               </RutaProtegida>
             }
           >
-            {/* Sub-rutas de módulos (placeholders, reemplazar con componentes reales) */}
+            {/* Sub-rutas de módulos */}
             {/* Ruta: /dashboard/admin/inventario */}
-            <Route path="inventario"    element={<ModuloPlaceholder nombre="Inventario" />} />
+            <Route path="inventario"    element={<InventarioPage />} />
             {/* Ruta: /dashboard/admin/prestamos */}
-            <Route path="prestamos"     element={<ModuloPlaceholder nombre="Préstamos" />} />
+            <Route path="prestamos"     element={<PrestamosPage />} />
             {/* Ruta: /dashboard/admin/mantenimiento */}
-            <Route path="mantenimiento" element={<ModuloPlaceholder nombre="Mantenimiento" />} />
+            <Route path="mantenimiento" element={<MantenimientoPage />} />
             {/* Ruta: /dashboard/admin/movimientos */}
-            <Route path="movimientos"   element={<ModuloPlaceholder nombre="Movimientos" />} />
+            <Route path="movimientos"   element={<MovimientosPage />} />
             {/* Ruta: /dashboard/admin/usuarios */}
-            <Route path="usuarios"      element={<ModuloPlaceholder nombre="Usuarios" />} />
+            <Route path="usuarios"      element={<UsuariosPage />} />
             {/* Ruta: /dashboard/admin/categorias */}
-            <Route path="categorias"    element={<ModuloPlaceholder nombre="Categorías" />} />
+            <Route path="categorias"    element={<CategoriasPage />} />
             {/* Ruta: /dashboard/admin/ubicaciones */}
-            <Route path="ubicaciones"   element={<ModuloPlaceholder nombre="Ubicaciones" />} />
+            <Route path="ubicaciones"   element={<UbicacionesPage />} />
           </Route>
 
           {/* ──────────────────────────────────────────────────────────── */}

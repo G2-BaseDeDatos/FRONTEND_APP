@@ -128,9 +128,9 @@ export default function PendingRequestsTable({
         </h2>
         <div className={styles.emptyState} aria-live="polite">
           <ClipboardList size={48} color="#CBD5E1" aria-hidden="true" />
-          <p className={styles.emptyTitle}>No hay préstamos pendientes</p>
+          <p className={styles.emptyTitle}>Próximamente: Aprobación de Préstamos</p>
           <p className={styles.emptySubtitle}>
-            Todas las solicitudes han sido revisadas o el módulo de préstamos aún no está activo.
+            Actualmente los préstamos se crean como activos directamente. El flujo de aprobación con estado "Pendiente" está en desarrollo.
           </p>
         </div>
       </section>
