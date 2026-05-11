@@ -1,0 +1,409 @@
+/* =============================================================================
+   Login.module.css — Estilos encapsulados del componente Login
+   Paleta de azules institucionales GITT
+   ============================================================================= */
+
+/* ── Fondo general ──────────────────────────────────────────────────────────── */
+.fondo {
+  min-height: 100vh;
+  background: #F0F4FF;
+  background-image:
+    radial-gradient(ellipse at 20% 50%, rgba(59, 130, 246, 0.08) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(30,  58, 138, 0.06) 0%, transparent 60%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+}
+
+/* ── Tarjeta del formulario ─────────────────────────────────────────────────── */
+.tarjeta {
+  width: 100%;
+  max-width: 420px;
+  background: #FFFFFF;
+  border-radius: 16px;
+  padding: 40px 32px;
+  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.08);
+  margin: 20px;
+
+  /* Animación de entrada */
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.tarjetaVisible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Cabecera ───────────────────────────────────────────────────────────────── */
+.cabecera {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.iconoWrapper {
+  width: 52px;
+  height: 52px;
+  background: linear-gradient(135deg, #EFF6FF, #DBEAFE);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  box-shadow: 0 2px 8px rgba(30, 58, 138, 0.12);
+}
+
+.iconoAcademico {
+  width: 26px;
+  height: 26px;
+  color: #1E3A8A;
+}
+
+.titulo {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1E3A8A;
+  margin: 0 0 6px;
+  line-height: 1.3;
+}
+
+.subtitulo {
+  font-size: 18px;
+  font-weight: 500;
+  color: #475569;
+  margin: 0;
+}
+
+/* ── Formulario ─────────────────────────────────────────────────────────────── */
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ── Grupo de campo ─────────────────────────────────────────────────────────── */
+.campoGrupo {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* ── Etiqueta de campo ──────────────────────────────────────────────────────── */
+.etiqueta {
+  font-size: 14px;
+  font-weight: 500;
+  color: #334155;
+  margin-bottom: 8px;
+  display: block;
+}
+
+/* ── Input base ─────────────────────────────────────────────────────────────── */
+.input {
+  height: 48px;
+  width: 100%;
+  border: 1.5px solid #CBD5E1;
+  border-radius: 8px;
+  padding: 0 16px;
+  font-size: 16px;
+  color: #1E293B;
+  background: #F8FAFC;
+  outline: none;
+  transition: border-color 0.2s ease-in-out,
+              box-shadow   0.2s ease-in-out,
+              background   0.2s ease-in-out;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.input:focus {
+  border-color: #3B82F6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+  background: #FFFFFF;
+}
+
+.input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.input::placeholder {
+  color: #94A3B8;
+}
+
+.inputError {
+  border-color: #DC2626;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+
+/* ── Wrapper contraseña (input + ojito) ─────────────────────────────────────── */
+.contrasenaWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.contrasenaWrapper .input {
+  padding-right: 48px;
+}
+
+/* ── Botón ojito ────────────────────────────────────────────────────────────── */
+.botonOjo {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  color: #60A5FA;
+  transition: color 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
+  border-radius: 4px;
+}
+
+.botonOjo:hover {
+  color: #3B82F6;
+  opacity: 0.85;
+}
+
+.botonOjo:active {
+  transform: translateY(-50%) scale(0.9);
+}
+
+.botonOjo:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.botonOjo svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* ── Etiqueta de rol detectado ──────────────────────────────────────────────── */
+.etiquetaRol {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  margin-top: 8px;
+  background: #DBEAFE;
+  color: #1E40AF;
+  width: fit-content;
+
+  /* Animación suave de aparición */
+  animation: aparecer 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.puntito {
+  font-size: 8px;
+  line-height: 1;
+}
+
+/* Variantes de color por rol */
+.rol-admin {
+  background: #1E3A8A;
+  color: #EFF6FF;
+}
+
+.rol-docente {
+  background: #BFDBFE;
+  color: #1D4ED8;
+}
+
+.rol-estudiante {
+  background: #DBEAFE;
+  color: #1E40AF;
+}
+
+.rol-neutro {
+  background: #F1F5F9;
+  color: #64748B;
+}
+
+/* ── Mensajes de error de campo ─────────────────────────────────────────────── */
+.errorCampo {
+  display: block;
+  color: #DC2626;
+  font-size: 13px;
+  margin-top: 6px;
+  animation: aparecer 0.25s ease both;
+}
+
+/* ── Error general (credenciales / red) ─────────────────────────────────────── */
+.errorGeneral {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #FEF2F2;
+  border: 1px solid #FECACA;
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: #DC2626;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.iconoError {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+/* ── Botón principal ────────────────────────────────────────────────────────── */
+.botonPrimario {
+  width: 100%;
+  height: 48px;
+  background: linear-gradient(135deg, #1E3A8A, #3B82F6);
+  color: #FFFFFF;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  font-family: inherit;
+  box-shadow: 0px 4px 12px rgba(30, 58, 138, 0.3);
+  transition: transform 0.18s ease,
+              box-shadow 0.18s ease,
+              opacity    0.18s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.botonPrimario:hover:not(:disabled) {
+  transform: scale(1.02);
+  box-shadow: 0px 6px 18px rgba(30, 58, 138, 0.4);
+}
+
+.botonPrimario:active:not(:disabled) {
+  transform: scale(0.98);
+  box-shadow: 0px 2px 8px rgba(30, 58, 138, 0.25);
+}
+
+.botonPrimario:disabled {
+  opacity: 0.75;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Pulse cuando el formulario es válido */
+.botonPulse {
+  animation: pulse 2.4s ease-in-out infinite;
+}
+
+/* ── Estado de carga ────────────────────────────────────────────────────────── */
+.estadoCarga {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2.5px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: girar 0.75s linear infinite;
+  flex-shrink: 0;
+}
+
+/* ── Footer de enlaces ──────────────────────────────────────────────────────── */
+.enlacesFooter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.enlaceTexto {
+  background: none;
+  border: none;
+  font-size: 14px;
+  color: #3B82F6;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  font-family: inherit;
+  padding: 0;
+  transition: color 0.18s ease;
+}
+
+.enlaceTexto:hover {
+  color: #1D4ED8;
+}
+
+.separador {
+  color: #CBD5E1;
+  font-size: 14px;
+  user-select: none;
+}
+
+/* ── Keyframes ──────────────────────────────────────────────────────────────── */
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes girar {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0px 4px 12px rgba(30, 58, 138, 0.3);
+  }
+  50% {
+    box-shadow: 0px 6px 22px rgba(59, 130, 246, 0.45);
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  15%       { transform: translateX(-6px); }
+  30%       { transform: translateX(6px); }
+  45%       { transform: translateX(-5px); }
+  60%       { transform: translateX(5px); }
+  75%       { transform: translateX(-3px); }
+  90%       { transform: translateX(3px); }
+}
+
+.shake {
+  animation: shake 0.55s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+/* ── Responsive (móvil) ─────────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .tarjeta {
+    padding: 32px 24px;
+    margin: 12px;
+  }
+
+  .titulo {
+    font-size: 19px;
+  }
+
+  .subtitulo {
+    font-size: 16px;
+  }
+}

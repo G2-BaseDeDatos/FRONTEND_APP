@@ -1,0 +1,147 @@
+/* ActiveLoanAlert.module.css */
+
+/* ── Tarjeta base ────────────────────────────────────────────────────────────── */
+.card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 24px;
+  border-radius: 14px;
+  border: 1px solid;
+  animation: slideIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+  transition: box-shadow 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* Variantes de color */
+.cardOk {
+  background: #F0FDF4;
+  border-color: #BBF7D0;
+}
+
+.cardNormal {
+  background: #FFFFFF;
+  border-color: #E2E8F0;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.cardUrgente {
+  background: #FFFBEB;
+  border-color: #FDE68A;
+  box-shadow: 0px 4px 12px rgba(245, 158, 11, 0.12);
+}
+
+.cardVencido {
+  background: #FEF2F2;
+  border-color: #FECACA;
+  box-shadow: 0px 4px 12px rgba(239, 68, 68, 0.12);
+  animation: slideIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both,
+             pulsoRojo 2.5s ease-in-out 1s infinite;
+}
+
+/* ── Icono ────────────────────────────────────────────────────────────────────── */
+.iconWrap {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ── Texto ────────────────────────────────────────────────────────────────────── */
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+}
+
+.titulo {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1E293B;
+  margin: 0;
+}
+
+.equipoNombre {
+  font-size: 14px;
+  color: #475569;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── Contador ─────────────────────────────────────────────────────────────────── */
+.contador {
+  display: inline-block;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  transition: color 0.4s ease;
+}
+
+.countNormal   { color: #1E3A8A; }
+.countUrgente  { color: #B45309; }
+.countVencido  { color: #DC2626; }
+.countSinFecha { color: #94A3B8; font-size: 14px; font-weight: 400; }
+
+.masEquipos {
+  font-size: 12px;
+  color: #94A3B8;
+  margin: 0;
+}
+
+.subtitulo {
+  font-size: 13px;
+  color: #64748B;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ── Skeleton ─────────────────────────────────────────────────────────────────── */
+.skeleton {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 14px;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.skeletonLine {
+  height: 16px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #E2E8F0 25%, #F1F5F9 50%, #E2E8F0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+/* ── Keyframes ────────────────────────────────────────────────────────────────── */
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-12px); }
+  to   { opacity: 1; transform: translateX(0);     }
+}
+
+@keyframes pulsoRojo {
+  0%, 100% { box-shadow: 0px 4px 12px rgba(239, 68, 68, 0.12); }
+  50%       { box-shadow: 0px 4px 20px rgba(239, 68, 68, 0.28); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── Responsive ───────────────────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .card      { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .contador  { font-size: 18px; }
+}

@@ -1,0 +1,83 @@
+/* Toast.module.css */
+
+.toast {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  border-radius: 12px;
+  box-shadow: 0px 12px 32px rgba(0, 0, 0, 0.14);
+  font-size: 14px;
+  font-weight: 500;
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  z-index: 9999;
+  max-width: 340px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.28s ease, transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: all;
+}
+
+.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Variantes */
+.exito {
+  background: #10B981;
+  color: #FFFFFF;
+}
+
+.error {
+  background: #EF4444;
+  color: #FFFFFF;
+}
+
+.info {
+  background: #3B82F6;
+  color: #FFFFFF;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.mensaje {
+  flex: 1;
+  line-height: 1.4;
+}
+
+.cerrarBtn {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: inherit;
+  flex-shrink: 0;
+  transition: background 0.15s ease;
+  padding: 0;
+}
+
+.cerrarBtn:hover {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+@media (max-width: 480px) {
+  .toast {
+    bottom: 16px;
+    right: 16px;
+    left: 16px;
+    max-width: none;
+  }
+}
