@@ -6,6 +6,9 @@ import UsuariosPage         from './pages/Usuarios/UsuariosPage';
 import InventarioPage       from './pages/Inventario/InventarioPage';
 import PrestamosPage        from './pages/Prestamos/PrestamosPage';
 import MantenimientoPage    from './pages/Mantenimiento/MantenimientoPage';
+import MovimientosPage      from './pages/Movimientos/MovimientosPage';
+import CategoriasPage       from './pages/Categorias/CategoriasPage';
+import UbicacionesPage      from './pages/Ubicaciones/UbicacionesPage';
 import DashboardDocente     from './pages/Dashboard/DashboardDocente';
 import DashboardEstudiante  from './pages/Dashboard/DashboardEstudiante';
 
@@ -95,13 +98,13 @@ export default function App() {
             {/* Ruta: /dashboard/admin/mantenimiento */}
             <Route path="mantenimiento" element={<MantenimientoPage />} />
             {/* Ruta: /dashboard/admin/movimientos */}
-            <Route path="movimientos"   element={<ModuloPlaceholder nombre="Movimientos" />} />
+            <Route path="movimientos"   element={<MovimientosPage />} />
             {/* Ruta: /dashboard/admin/usuarios */}
             <Route path="usuarios"      element={<UsuariosPage />} />
             {/* Ruta: /dashboard/admin/categorias */}
-            <Route path="categorias"    element={<ModuloPlaceholder nombre="Categorías" />} />
+            <Route path="categorias"    element={<CategoriasPage />} />
             {/* Ruta: /dashboard/admin/ubicaciones */}
-            <Route path="ubicaciones"   element={<ModuloPlaceholder nombre="Ubicaciones" />} />
+            <Route path="ubicaciones"   element={<UbicacionesPage />} />
           </Route>
 
           {/* ──────────────────────────────────────────────────────────── */}
