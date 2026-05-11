@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Search, Plus, CheckCircle, Clock } from 'lucide-react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styles from './PrestamosPage.module.css';
 import { fetchPrestamos, crearPrestamo, devolverPrestamo } from '../../services/prestamosService';
 import { fetchUsuarios } from '../../services/usuariosService';
@@ -18,7 +19,7 @@ export default function PrestamosPage() {
   const [filtroEstado, setFiltroEstado] = useState('');
 
   // Modales
-  const [modalForm, setModalForm] = useState(false);
+  const [modalForm, setModalForm] = useState({ isOpen: false, preselectedArticleId: null });
   const [modalConfirm, setModalConfirm] = useState({ isOpen: false, prestamo: null });
 
   // Toast
@@ -42,9 +43,21 @@ export default function PrestamosPage() {
     }
   };
 
+  const location = useLocation();
+  const navigate = useNavigate();
+
   useEffect(() => {
     cargarDatos();
   }, []);
+
+  useEffect(() => {
+    // Si venimos del catálogo con un artículo preseleccionado
+    if (location.state?.preselectArticleId) {
+      setModalForm({ isOpen: true, preselectedArticleId: location.state.preselectArticleId });
+      // Limpiar el estado para que al recargar no se vuelva a abrir
+      navigate(location.pathname, { replace: true });
+    }
+  }, [location.state, navigate, location.pathname]);
 
   const mostrarToast = (mensaje, tipo = 'success') => {
     setToast({ mensaje, tipo });
@@ -66,7 +79,7 @@ export default function PrestamosPage() {
     try {
       await crearPrestamo(formData);
       mostrarToast('Préstamo registrado exitosamente');
-      setModalForm(false);
+      setModalForm({ isOpen: false, preselectedArticleId: null });
       cargarDatos();
     } catch (error) {
       throw error;
@@ -107,7 +120,7 @@ export default function PrestamosPage() {
             Administre las asignaciones de equipos a docentes y estudiantes.
           </p>
         </div>
-        <button className={styles.btnNuevo} onClick={() => setModalForm(true)}>
+        <button className={styles.btnNuevo} onClick={() => setModalForm({ isOpen: true, preselectedArticleId: null })}>
           <Plus size={18} />
           Nuevo Préstamo
         </button>
@@ -202,11 +215,12 @@ export default function PrestamosPage() {
         </table>
       </div>
 
-      {modalForm && (
+      {modalForm.isOpen && (
         <PrestamoFormModal
           usuarios={usuarios}
           articulos={articulosDisponibles}
-          onClose={() => setModalForm(false)}
+          preselectedArticleId={modalForm.preselectedArticleId}
+          onClose={() => setModalForm({ isOpen: false, preselectedArticleId: null })}
           onSave={handleGuardarForm}
         />
       )}

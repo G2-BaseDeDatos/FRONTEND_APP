@@ -4,6 +4,7 @@ import Login                from './pages/Login/Login';
 import AdminDashboardPage   from './pages/Dashboard/DashboardAdmin';
 import UsuariosPage         from './pages/Usuarios/UsuariosPage';
 import RolesPage            from './pages/Roles/RolesPage';
+import CatalogoDocente      from './pages/Catalogo/CatalogoDocente';
 import InventarioPage       from './pages/Inventario/InventarioPage';
 import PrestamosPage        from './pages/Prestamos/PrestamosPage';
 import MantenimientoPage    from './pages/Mantenimiento/MantenimientoPage';
@@ -125,7 +126,7 @@ export default function App() {
             {/* Ruta: /dashboard/docente/roles → vista de solo lectura */}
             <Route path="roles"              element={<RolesPage />} />
             {/* Ruta: /dashboard/docente/catalogo  → catálogo de equipos */}
-            <Route path="catalogo"           element={<ModuloPlaceholder nombre="Catálogo de Equipos" />} />
+            <Route path="catalogo"           element={<CatalogoDocente />} />
             {/* Ruta: /dashboard/docente/articulo/:id → detalle de artículo */}
             <Route path="articulo/:id"       element={<ModuloPlaceholder nombre="Detalle del Artículo" />} />
           </Route>
