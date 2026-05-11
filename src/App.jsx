@@ -13,6 +13,9 @@ import CategoriasPage       from './pages/Categorias/CategoriasPage';
 import UbicacionesPage      from './pages/Ubicaciones/UbicacionesPage';
 import DashboardDocente     from './pages/Dashboard/DashboardDocente';
 import DashboardEstudiante  from './pages/Dashboard/DashboardEstudiante';
+import MisPrestamosEstudiante from './pages/Prestamos/MisPrestamosEstudiante';
+import CatalogoEstudiante     from './pages/Catalogo/CatalogoEstudiante';
+import DetalleArticuloEstudiante from './pages/Catalogo/DetalleArticuloEstudiante';
 
 // ──────────────────────────────────────────────────────────────────────────────
 // Placeholder genérico para módulos futuros del panel de administrador.
@@ -137,9 +140,9 @@ export default function App() {
             path="/dashboard/estudiante"
             element={<RutaProtegida><DashboardEstudiante /></RutaProtegida>}
           >
-            <Route path="mis-prestamos" element={<ModuloPlaceholder nombre="Mis Préstamos" />} />
-            <Route path="catalogo"      element={<ModuloPlaceholder nombre="Catálogo" />} />
-            <Route path="articulo/:id"  element={<ModuloPlaceholder nombre="Detalle del Artículo" />} />
+            <Route path="mis-prestamos" element={<MisPrestamosEstudiante />} />
+            <Route path="catalogo"      element={<CatalogoEstudiante />} />
+            <Route path="articulo/:id"  element={<DetalleArticuloEstudiante />} />
           </Route>
 
           {/* ── Fallbacks ─────────────────────────────────────────────── */}

@@ -7,34 +7,18 @@ import HeroSearch           from '../../components/HeroSearch/HeroSearch';
 import ActiveLoanAlert      from '../../components/ActiveLoanAlert/ActiveLoanAlert';
 import EquipmentCard, { EquipmentCardSkeleton }
                             from '../../components/EquipmentCard/EquipmentCard';
+import CategoryGrid         from '../../components/CategoryGrid/CategoryGrid';
 import Toast                from '../../components/Toast/Toast';
 import {
   fetchArticulosDisponibles,
   fetchMisPrestamos,
+  fetchCategorias,
   solicitarPrestamo,
 } from '../../services/studentService';
 import styles from './StudentDashboardPage.module.css';
 
 // ──────────────────────────────────────────────────────────────────────────────
 // StudentDashboardPage.jsx — Panel principal del Estudiante
-//
-// Ruta: /dashboard/estudiante
-//
-// Datos cargados al montar (paralelas):
-//   1. fetchArticulosDisponibles()
-//      → GET /api/articulos?estado=Disponible
-//      → Catálogo de equipos disponibles
-//
-//   2. fetchMisPrestamos(id_usu)
-//      → GET /api/articulos?estado=Prestado&responsable={id_usu}
-//      → Artículos asignados al estudiante (stub de préstamos futuros)
-//
-// Búsqueda: 100% LOCAL sobre el array de artículos ya cargado.
-//   - Debounce de 300ms implementado dentro de HeroSearch.jsx
-//   - No requiere endpoint adicional del backend.
-//
-// Solicitud: stub en solicitarPrestamo() que simula éxito.
-//   - Al resolver: toast verde + artículo marcado como solicitado en estado local.
 // ──────────────────────────────────────────────────────────────────────────────
 
 const SKELETON_COUNT = 8;
@@ -46,12 +30,14 @@ export default function StudentDashboardPage() {
   // ── Estado ────────────────────────────────────────────────────────────────
   const [articulos,    setArticulos]    = useState([]);
   const [prestamos,    setPrestamos]    = useState([]);
+  const [categorias,   setCategorias]   = useState([]);
   const [cargandoArt,  setCargandoArt]  = useState(true);
   const [cargandoPre,  setCargandoPre]  = useState(true);
+  const [cargandoCat,  setCargandoCat]  = useState(true);
   const [errorGlobal,  setErrorGlobal]  = useState('');
   const [queryFiltro,  setQueryFiltro]  = useState('');
-  const [solicitados,  setSolicitados]  = useState(new Set()); // IDs ya solicitados
-  const [toast,        setToast]        = useState(null);    // { mensaje, tipo }
+  const [solicitados,  setSolicitados]  = useState(new Set()); 
+  const [toast,        setToast]        = useState(null);    
   const [mounted,      setMounted]      = useState(false);
 
   // ── Guard de rol ──────────────────────────────────────────────────────────
@@ -71,6 +57,7 @@ export default function StudentDashboardPage() {
     setErrorGlobal('');
     setCargandoArt(true);
     setCargandoPre(true);
+    setCargandoCat(true);
 
     // Equipos disponibles (catálogo)
     fetchArticulosDisponibles()
@@ -86,6 +73,13 @@ export default function StudentDashboardPage() {
       .then(setPrestamos)
       .catch(() => setPrestamos([]))
       .finally(() => setCargandoPre(false));
+
+    // Categorías
+    fetchCategorias()
+      .then(setCategorias)
+      .catch(() => setCategorias([]))
+      .finally(() => setCargandoCat(false));
+
   }, [usuario?.id_usu, cerrarSesion, navigate]);
 
   useEffect(() => {
@@ -105,9 +99,7 @@ export default function StudentDashboardPage() {
 
   // ── Solicitar préstamo ────────────────────────────────────────────────────
   const handleSolicitar = useCallback(async (idArticulo) => {
-    await solicitarPrestamo(idArticulo);
-    setSolicitados((prev) => new Set([...prev, idArticulo]));
-    setToast({ mensaje: '¡Solicitud enviada! El administrador la revisará pronto.', tipo: 'exito' });
+    setToast({ mensaje: 'Funcionalidad de solicitud Próximamente', tipo: 'info' });
   }, []);
 
   // ── Click en resultado del dropdown → scroll a la tarjeta o filtrar ───────
@@ -160,6 +152,21 @@ export default function StudentDashboardPage() {
             <ActiveLoanAlert
               prestamos={prestamos}
               cargando={cargandoPre}
+            />
+          </section>
+
+          {/* ── Categorías ────────────────────────────────────────────── */}
+          <section aria-label="Categorías de equipos" className={styles.sectionMargin}>
+            <div className={styles.catalogoHeader}>
+              <h2 className={styles.catalogoTitulo}>
+                <Package size={20} aria-hidden="true" />
+                Explorar por Categoría
+              </h2>
+            </div>
+            <CategoryGrid
+              categorias={categorias}
+              cargando={cargandoCat}
+              onSeleccionar={(cat) => navigate(`/dashboard/estudiante/catalogo?categoria=${cat.ID_CAT}`)}
             />
           </section>
 
@@ -258,6 +265,7 @@ function StudentNavbar() {
   const nav = useNavigate();
   const [menuMovil,       setMenuMovil]       = useStateNav(false);
   const [dropdownAbierto, setDropdownAbierto] = useStateNav(false);
+  const [notificacionesAbiertas, setNotificacionesAbiertas] = useStateNav(false);
   const dropdownRef = useRefNav(null);
 
   useEffectNav(() => {
@@ -292,10 +300,29 @@ function StudentNavbar() {
         </nav>
 
         <div className={navStyles.right}>
-          <button className={navStyles.bellBtn} aria-label="Notificaciones">
-            <Bell size={20} className={navStyles.bellIcon} />
-            <span className={navStyles.bellBadge} aria-hidden="true" />
-          </button>
+          <div className={navStyles.profileWrapper} style={{ position: 'relative' }}>
+            <button 
+              className={navStyles.bellBtn} 
+              aria-label="Notificaciones"
+              onClick={() => setNotificacionesAbiertas(v => !v)}
+            >
+              <Bell size={20} className={navStyles.bellIcon} />
+              <span className={navStyles.bellBadge} aria-hidden="true" />
+            </button>
+            {notificacionesAbiertas && (
+              <div 
+                className={navStyles.dropdown} 
+                style={{ right: 0, minWidth: '250px', padding: '16px', textAlign: 'center' }}
+                role="menu"
+              >
+                <Bell size={24} color="#94A3B8" style={{ margin: '0 auto 8px' }} />
+                <p style={{ margin: '0 0 4px', fontWeight: 600, color: '#1E293B' }}>Notificaciones</p>
+                <p style={{ margin: 0, fontSize: '13px', color: '#64748B' }}>
+                  Próximamente: Historial de alertas y vencimientos.
+                </p>
+              </div>
+            )}
+          </div>
 
           <div className={navStyles.profileWrapper} ref={dropdownRef}>
             <button
