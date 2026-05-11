@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Search, Plus, Edit2, Trash2, Users } from 'lucide-react';
 import styles from './UsuariosPage.module.css';
+import { useAuth } from '../../context/AuthContext';
 import { fetchUsuarios, fetchRoles, crearUsuario, actualizarUsuario, eliminarUsuario } from '../../services/usuariosService';
 import UsuarioFormModal from './UsuarioFormModal';
 import ConfirmModal from '../../components/ConfirmModal/ConfirmModal';
@@ -9,6 +10,8 @@ export default function UsuariosPage() {
   const [usuarios, setUsuarios] = useState([]);
   const [roles, setRoles] = useState([]);
   const [cargando, setCargando] = useState(true);
+  const { usuario } = useAuth();
+  const esAdmin = usuario?.rol === 'Administrador';
   
   // Filtros
   const [busqueda, setBusqueda] = useState('');
@@ -121,10 +124,12 @@ export default function UsuariosPage() {
             Administra docentes, estudiantes y otros administradores del sistema.
           </p>
         </div>
-        <button className={styles.btnNuevo} onClick={() => handleAbrirForm()}>
-          <Plus size={18} />
-          Nuevo Usuario
-        </button>
+        {esAdmin && (
+          <button className={styles.btnNuevo} onClick={() => handleAbrirForm()}>
+            <Plus size={18} />
+            Nuevo Usuario
+          </button>
+        )}
       </div>
 
       <div className={styles.controls}>
@@ -159,7 +164,7 @@ export default function UsuariosPage() {
               <th className={styles.th}>Nombre</th>
               <th className={styles.th}>Correo Institucional</th>
               <th className={styles.th}>Rol</th>
-              <th className={styles.th}>Acciones</th>
+              {esAdmin && <th className={styles.th}>Acciones</th>}
             </tr>
           </thead>
           <tbody>
@@ -191,24 +196,26 @@ export default function UsuariosPage() {
                       {u.NOM_ROL}
                     </span>
                   </td>
-                  <td className={styles.td}>
-                    <div className={styles.acciones}>
-                      <button 
-                        className={styles.btnAccion} 
-                        onClick={() => handleAbrirForm(u)}
-                        aria-label="Editar usuario"
-                      >
-                        <Edit2 size={16} />
-                      </button>
-                      <button 
-                        className={`${styles.btnAccion} ${styles.btnAccionDelete}`}
-                        onClick={() => handleAbrirConfirm(u)}
-                        aria-label="Eliminar usuario"
-                      >
-                        <Trash2 size={16} />
-                      </button>
-                    </div>
-                  </td>
+                  {esAdmin && (
+                    <td className={styles.td}>
+                      <div className={styles.acciones}>
+                        <button 
+                          className={styles.btnAccion} 
+                          onClick={() => handleAbrirForm(u)}
+                          aria-label="Editar usuario"
+                        >
+                          <Edit2 size={16} />
+                        </button>
+                        <button 
+                          className={`${styles.btnAccion} ${styles.btnAccionDelete}`}
+                          onClick={() => handleAbrirConfirm(u)}
+                          aria-label="Eliminar usuario"
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
+                    </td>
+                  )}
                 </tr>
               ))
             )}

@@ -3,6 +3,7 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import Login                from './pages/Login/Login';
 import AdminDashboardPage   from './pages/Dashboard/DashboardAdmin';
 import UsuariosPage         from './pages/Usuarios/UsuariosPage';
+import RolesPage            from './pages/Roles/RolesPage';
 import InventarioPage       from './pages/Inventario/InventarioPage';
 import PrestamosPage        from './pages/Prestamos/PrestamosPage';
 import MantenimientoPage    from './pages/Mantenimiento/MantenimientoPage';
@@ -115,8 +116,14 @@ export default function App() {
             path="/dashboard/docente"
             element={<RutaProtegida><DashboardDocente /></RutaProtegida>}
           >
-            {/* Ruta: /dashboard/docente/prestamos → mis préstamos (futuro) */}
-            <Route path="prestamos"          element={<ModuloPlaceholder nombre="Mis Préstamos" />} />
+            {/* Ruta: /dashboard/docente/prestamos → mis préstamos y globales */}
+            <Route path="prestamos"          element={<PrestamosPage />} />
+            {/* Ruta: /dashboard/docente/mantenimientos → gestión de reparaciones */}
+            <Route path="mantenimientos"     element={<MantenimientoPage />} />
+            {/* Ruta: /dashboard/docente/usuarios → vista de solo lectura */}
+            <Route path="usuarios"           element={<UsuariosPage />} />
+            {/* Ruta: /dashboard/docente/roles → vista de solo lectura */}
+            <Route path="roles"              element={<RolesPage />} />
             {/* Ruta: /dashboard/docente/catalogo  → catálogo de equipos */}
             <Route path="catalogo"           element={<ModuloPlaceholder nombre="Catálogo de Equipos" />} />
             {/* Ruta: /dashboard/docente/articulo/:id → detalle de artículo */}
