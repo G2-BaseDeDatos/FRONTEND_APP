@@ -1,4 +1,4 @@
-/* ActiveLoanAlert.module.css */
+/* ActiveLoanAlert.module.css — Dark Theme */
 
 /* ── Tarjeta base ────────────────────────────────────────────────────────────── */
 .card {
@@ -13,31 +13,31 @@
 }
 
 .card:hover {
-  box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.3);
 }
 
 /* Variantes de color */
 .cardOk {
-  background: #F0FDF4;
-  border-color: #BBF7D0;
+  background: rgba(52, 211, 153, 0.06);
+  border-color: rgba(52, 211, 153, 0.15);
 }
 
 .cardNormal {
-  background: #FFFFFF;
-  border-color: #E2E8F0;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.06);
+  background: rgba(23, 24, 33, 0.7);
+  border-color: rgba(255, 255, 255, 0.06);
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .cardUrgente {
-  background: #FFFBEB;
-  border-color: #FDE68A;
-  box-shadow: 0px 4px 12px rgba(245, 158, 11, 0.12);
+  background: rgba(249, 115, 22, 0.06);
+  border-color: rgba(249, 115, 22, 0.15);
+  box-shadow: 0px 4px 12px rgba(249, 115, 22, 0.08);
 }
 
 .cardVencido {
-  background: #FEF2F2;
-  border-color: #FECACA;
-  box-shadow: 0px 4px 12px rgba(239, 68, 68, 0.12);
+  background: rgba(248, 113, 113, 0.06);
+  border-color: rgba(248, 113, 113, 0.15);
+  box-shadow: 0px 4px 12px rgba(248, 113, 113, 0.08);
   animation: slideIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both,
              pulsoRojo 2.5s ease-in-out 1s infinite;
 }
@@ -65,13 +65,13 @@
 .titulo {
   font-size: 15px;
   font-weight: 600;
-  color: #1E293B;
+  color: #ffffff;
   margin: 0;
 }
 
 .equipoNombre {
   font-size: 14px;
-  color: #475569;
+  color: #a0aec0;
   margin: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -87,28 +87,28 @@
   transition: color 0.4s ease;
 }
 
-.countNormal   { color: #1E3A8A; }
-.countUrgente  { color: #B45309; }
-.countVencido  { color: #DC2626; }
-.countSinFecha { color: #94A3B8; font-size: 14px; font-weight: 400; }
+.countNormal   { color: #34d399; }
+.countUrgente  { color: #f97316; }
+.countVencido  { color: #f87171; }
+.countSinFecha { color: #a0aec0; font-size: 14px; font-weight: 400; }
 
 .masEquipos {
   font-size: 12px;
-  color: #94A3B8;
+  color: #a0aec0;
   margin: 0;
 }
 
 .subtitulo {
   font-size: 13px;
-  color: #64748B;
+  color: #a0aec0;
   margin: 0;
   line-height: 1.5;
 }
 
 /* ── Skeleton ─────────────────────────────────────────────────────────────────── */
 .skeleton {
-  background: #FFFFFF;
-  border: 1px solid #E2E8F0;
+  background: rgba(23, 24, 33, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.04);
   border-radius: 14px;
   padding: 20px 24px;
   display: flex;
@@ -119,7 +119,7 @@
 .skeletonLine {
   height: 16px;
   border-radius: 4px;
-  background: linear-gradient(90deg, #E2E8F0 25%, #F1F5F9 50%, #E2E8F0 75%);
+  background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0.03) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.4s ease-in-out infinite;
 }
@@ -131,8 +131,8 @@
 }
 
 @keyframes pulsoRojo {
-  0%, 100% { box-shadow: 0px 4px 12px rgba(239, 68, 68, 0.12); }
-  50%       { box-shadow: 0px 4px 20px rgba(239, 68, 68, 0.28); }
+  0%, 100% { box-shadow: 0px 4px 12px rgba(248, 113, 113, 0.08); }
+  50%       { box-shadow: 0px 4px 20px rgba(248, 113, 113, 0.15); }
 }
 
 @keyframes shimmer {

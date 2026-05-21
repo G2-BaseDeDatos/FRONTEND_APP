@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { useNavigate, Outlet } from 'react-router-dom';
-import { Package, AlertCircle, RefreshCw } from 'lucide-react';
+import { Package, AlertCircle, RefreshCw, PackageX } from 'lucide-react';
 import { useAuth }          from '../../context/AuthContext';
 import TeacherNavbar        from '../../components/TeacherNavbar/TeacherNavbar';
 import HeroSearch           from '../../components/HeroSearch/HeroSearch';
@@ -134,7 +134,7 @@ export default function StudentDashboardPage() {
           <section className={styles.heroSection} aria-label="Búsqueda de equipos">
             <div className={styles.heroTexto}>
               <h1 className={styles.heroTitulo}>
-                Hola, <span className={styles.heroNombre}>{primerNombre}</span> 👋
+                Hola, <span className={styles.heroNombre}>{primerNombre}</span>!
               </h1>
               <p className={styles.heroSub}>
                 Encuentra el equipo que necesitas para tus clases y solicítalo con un clic.
@@ -195,7 +195,7 @@ export default function StudentDashboardPage() {
               </div>
             ) : articulosFiltrados.length === 0 ? (
               <div className={styles.emptyGrid}>
-                <Package size={48} color="#CBD5E1" aria-hidden="true" />
+                <PackageX size={48} color="#a0aec0" aria-hidden="true" />
                 <p className={styles.emptyTitulo}>
                   {queryFiltro
                     ? `No se encontraron equipos para "${queryFiltro}"`
@@ -284,7 +284,7 @@ function StudentNavbar() {
     <header className={navStyles.navbar}>
       <div className={navStyles.inner}>
         <NavLink to="/dashboard/estudiante" className={navStyles.logo} aria-label="Inicio">
-          <div className={navStyles.logoIcon}><GraduationCap size={18} color="#3B82F6" /></div>
+          <div className={navStyles.logoIcon}><GraduationCap size={18} color="#34d399" /></div>
           <span className={navStyles.logoText}>Inventario Académico</span>
         </NavLink>
 
@@ -315,9 +315,9 @@ function StudentNavbar() {
                 style={{ right: 0, minWidth: '250px', padding: '16px', textAlign: 'center' }}
                 role="menu"
               >
-                <Bell size={24} color="#94A3B8" style={{ margin: '0 auto 8px' }} />
-                <p style={{ margin: '0 0 4px', fontWeight: 600, color: '#1E293B' }}>Notificaciones</p>
-                <p style={{ margin: 0, fontSize: '13px', color: '#64748B' }}>
+                <Bell size={24} color="#a0aec0" style={{ margin: '0 auto 8px' }} />
+                <p style={{ margin: '0 0 4px', fontWeight: 600, color: '#ffffff' }}>Notificaciones</p>
+                <p style={{ margin: 0, fontSize: '13px', color: '#a0aec0' }}>
                   Próximamente: Historial de alertas y vencimientos.
                 </p>
               </div>

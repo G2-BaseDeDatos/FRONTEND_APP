@@ -1,15 +1,13 @@
-/* TeacherDashboardPage.module.css */
+/* TeacherDashboardPage.module.css — Dark Theme */
 
-/* ── Página completa ─────────────────────────────────────────────────────────── */
 .page {
   min-height: 100vh;
-  background: #F0F4FF;
+  background: #13131a;
   font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
   display: flex;
   flex-direction: column;
 }
 
-/* ── Contenido principal ─────────────────────────────────────────────────────── */
 .content {
   flex: 1;
   padding: 40px 0;
@@ -24,7 +22,6 @@
   transform: translateY(0);
 }
 
-/* Contenedor centrado con ancho máximo */
 .inner {
   max-width: 1280px;
   margin: 0 auto;
@@ -39,11 +36,11 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  background: #FEF2F2;
-  border: 1px solid #FECACA;
-  border-radius: 10px;
+  background: rgba(248, 113, 113, 0.08);
+  border: 1px solid rgba(248, 113, 113, 0.15);
+  border-radius: 12px;
   padding: 12px 16px;
-  color: #DC2626;
+  color: #f87171;
   font-size: 14px;
   font-weight: 500;
 }
@@ -54,17 +51,17 @@
   gap: 6px;
   margin-left: auto;
   background: none;
-  border: 1.5px solid #DC2626;
-  border-radius: 6px;
-  padding: 4px 10px;
-  color: #DC2626;
+  border: 1px solid rgba(248, 113, 113, 0.3);
+  border-radius: 8px;
+  padding: 4px 12px;
+  color: #f87171;
   font-size: 13px;
   cursor: pointer;
   font-family: inherit;
-  transition: background 0.15s ease;
+  transition: all 0.15s ease;
 }
 
-.reintentarBtn:hover { background: #FEE2E2; }
+.reintentarBtn:hover { background: rgba(248, 113, 113, 0.1); }
 
 /* ── Encabezado de bienvenida ────────────────────────────────────────────────── */
 .header {
@@ -78,18 +75,21 @@
 .saludo {
   font-size: 26px;
   font-weight: 700;
-  color: #1E3A8A;
+  color: #ffffff;
   margin: 0 0 6px;
   line-height: 1.2;
 }
 
 .saludoNombre {
-  color: #3B82F6;
+  background: linear-gradient(135deg, #34d399, #06b6d4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .saludoSub {
   font-size: 15px;
-  color: #64748B;
+  color: #a0aec0;
   margin: 0;
   max-width: 520px;
   line-height: 1.5;
@@ -100,8 +100,9 @@
   align-items: center;
   gap: 6px;
   padding: 6px 16px;
-  background: #DBEAFE;
-  color: #1E40AF;
+  background: rgba(139, 92, 246, 0.12);
+  color: #a78bfa;
+  border: 1px solid rgba(139, 92, 246, 0.2);
   border-radius: 20px;
   font-size: 13px;
   font-weight: 600;
@@ -122,13 +123,13 @@
   gap: 8px;
   font-size: 18px;
   font-weight: 600;
-  color: #1E293B;
+  color: #ffffff;
   margin: 0;
 }
 
 .sectionDesc {
   font-size: 14px;
-  color: #64748B;
+  color: #a0aec0;
   margin: -8px 0 20px;
   line-height: 1.5;
 }
@@ -141,8 +142,8 @@
   height: 24px;
   padding: 0 8px;
   border-radius: 12px;
-  background: #DBEAFE;
-  color: #1E40AF;
+  background: rgba(52, 211, 153, 0.12);
+  color: #34d399;
   font-size: 12px;
   font-weight: 700;
 }
@@ -156,9 +157,9 @@
 
 /* ── Estado vacío de préstamos ───────────────────────────────────────────────── */
 .emptyLoans {
-  background: #FFFFFF;
-  border-radius: 14px;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.06);
+  background: rgba(23, 24, 33, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
   padding: 56px 32px;
   text-align: center;
   display: flex;
@@ -176,13 +177,13 @@
 .emptyTitle {
   font-size: 17px;
   font-weight: 600;
-  color: #475569;
+  color: #ffffff;
   margin: 0;
 }
 
 .emptySubtitle {
   font-size: 14px;
-  color: #94A3B8;
+  color: #a0aec0;
   margin: 0;
   max-width: 340px;
   line-height: 1.6;
@@ -194,27 +195,27 @@
   gap: 8px;
   margin-top: 8px;
   padding: 10px 22px;
-  background: linear-gradient(135deg, #1E3A8A, #3B82F6);
-  color: #FFFFFF;
+  background: linear-gradient(135deg, #34d399, #059669);
+  color: #13131a;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   font-family: inherit;
-  box-shadow: 0px 4px 12px rgba(30, 58, 138, 0.28);
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  box-shadow: 0px 4px 15px rgba(52, 211, 153, 0.25);
+  transition: all 0.2s ease;
 }
 
 .explorarBtn:hover {
-  transform: scale(1.02);
-  box-shadow: 0px 6px 18px rgba(30, 58, 138, 0.38);
+  transform: translateY(-2px);
+  box-shadow: 0px 6px 20px rgba(52, 211, 153, 0.35);
 }
 
 /* ── Separador visual ────────────────────────────────────────────────────────── */
 .divider {
   height: 1px;
-  background: linear-gradient(to right, transparent, #CBD5E1, transparent);
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.06), transparent);
 }
 
 /* ── Keyframes ───────────────────────────────────────────────────────────────── */

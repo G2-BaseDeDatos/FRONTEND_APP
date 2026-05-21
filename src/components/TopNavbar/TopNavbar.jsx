@@ -55,7 +55,7 @@ export default function TopNavbar({ onMenuToggle, pageTitle }) {
           id="busqueda-global"
           type="search"
           className={styles.searchInput}
-          placeholder="Buscar equipos, usuarios…"
+          placeholder="Buscar aquí..."
           value={busqueda}
           onChange={(e) => setBusqueda(e.target.value)}
           autoComplete="off"

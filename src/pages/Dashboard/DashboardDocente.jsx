@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, Outlet, useLocation } from 'react-router-dom';
-import { BookOpen, Compass, AlertCircle, RefreshCw } from 'lucide-react';
+import { BookOpen, Compass, AlertCircle, RefreshCw, PackageOpen } from 'lucide-react';
 import { useAuth }          from '../../context/AuthContext';
 import TeacherNavbar        from '../../components/TeacherNavbar/TeacherNavbar';
 import ActiveLoanCard, { ActiveLoanCardSkeleton }
@@ -137,7 +137,7 @@ export default function TeacherDashboardPage() {
           <div className={styles.header}>
             <div>
               <h1 className={styles.saludo}>
-                ¡Hola, <span className={styles.saludoNombre}>{primerNombre}</span> 👋
+                ¡Hola, <span className={styles.saludoNombre}>{primerNombre}</span>!
               </h1>
               <p className={styles.saludoSub}>
                 Estos son los equipos que tienes asignados y las categorías disponibles para explorar.
@@ -172,7 +172,9 @@ export default function TeacherDashboardPage() {
             ) : articulosAsignados.length === 0 ? (
               /* Estado vacío elegante */
               <div className={styles.emptyLoans}>
-                <div className={styles.emptyIcon} aria-hidden="true">📦</div>
+                <div className={styles.emptyIcon} aria-hidden="true" style={{ color: '#a0aec0' }}>
+                  <PackageOpen size={48} />
+                </div>
                 <h3 className={styles.emptyTitle}>No tienes equipos asignados actualmente</h3>
                 <p className={styles.emptySubtitle}>
                   Cuando se te asigne un artículo, aparecerá aquí con su información completa.

@@ -50,7 +50,7 @@ export default function TeacherNavbar() {
         {/* ── Logo ────────────────────────────────────────────────────────── */}
         <NavLink to="/dashboard/docente" className={styles.logo} aria-label="Inicio">
           <div className={styles.logoIcon} aria-hidden="true">
-            <GraduationCap size={18} color="#3B82F6" />
+            <GraduationCap size={18} color="#34d399" />
           </div>
           <span className={styles.logoText}>Inventario Académico</span>
         </NavLink>

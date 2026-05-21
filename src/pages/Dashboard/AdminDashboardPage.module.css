@@ -1,150 +1,387 @@
-/* AdminDashboardPage.module.css */
+/* AdminDashboardPage.module.css - Modern Dark Theme Dashboard */
 
-/* ── Layout principal: sidebar | columna derecha ──────────────────────────── */
 .layout {
   display: flex;
   min-height: 100vh;
-  background: #F0F4FF;
+  background-color: #13131a;
+  color: #ffffff;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
 .mainColumn {
   flex: 1;
   display: flex;
   flex-direction: column;
-  min-width: 0; /* evita overflow en flex */
+  min-width: 0;
+  background-color: #13131a;
 }
 
-/* ── Contenido principal ────────────────────────────────────────────────────── */
 .content {
   flex: 1;
-  padding: 32px;
+  padding: 24px;
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 24px;
+  overflow-y: auto;
 }
 
-/* ── Banner de error ────────────────────────────────────────────────────────── */
-.errorBanner {
+/* ── Grid de Contenido Principal ───────────────────────────────────────────── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 24px;
+}
+
+/* ── Tarjetas Base ──────────────────────────────────────────────────────────── */
+.card {
+  background-color: #171821;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   display: flex;
-  align-items: center;
-  gap: 10px;
-  background: #FEF2F2;
-  border: 1px solid #FECACA;
-  border-radius: 10px;
-  padding: 12px 16px;
-  color: #DC2626;
-  font-size: 14px;
-  font-weight: 500;
+  flex-direction: column;
+  position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.reintentarBtn {
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+}
+
+.cardHeader {
   display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-left: auto;
-  background: none;
-  border: 1.5px solid #DC2626;
-  border-radius: 6px;
-  padding: 4px 10px;
-  color: #DC2626;
-  font-size: 13px;
-  cursor: pointer;
-  font-family: inherit;
-  transition: background 0.15s ease;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 20px;
 }
 
-.reintentarBtn:hover {
-  background: #FEE2E2;
-}
-
-/* ── Sección de tabla ───────────────────────────────────────────────────────── */
-.tableSection {
-  animation: sectionIn 0.4s ease both;
-}
-
-/* ── Resumen de artículos ───────────────────────────────────────────────────── */
-.resumenWrapper {
-  background: #FFFFFF;
-  border-radius: 12px;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.06);
-  overflow: hidden;
-  animation: sectionIn 0.5s ease both;
-}
-
-.resumenHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 20px 24px 16px;
-  border-bottom: 1px solid #E2E8F0;
-}
-
-.resumenTitulo {
-  font-size: 18px;
+.cardTitle {
+  font-size: 16px;
   font-weight: 600;
-  color: #1E293B;
+  color: #ffffff;
   margin: 0;
 }
 
-.resumenMeta {
+.cardSubtitle {
+  font-size: 12px;
+  color: #a0aec0;
+  margin: 0;
+}
+
+/* ── Tarjeta 1: Ventas de Hoy & Mini Tarjetas ─────────────────────────────── */
+.span12 {
+  grid-column: span 12;
+}
+
+.span6 {
+  grid-column: span 6;
+}
+
+.miniCardsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.miniCard {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.miniCard:hover {
+  background: rgba(255, 255, 255, 0.04);
+  transform: translateY(-1px);
+}
+
+.miniCardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.miniCardIconWrapper {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.miniCardValue {
+  font-size: 20px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+}
+
+.miniCardLabel {
   font-size: 13px;
-  color: #94A3B8;
+  color: #a0aec0;
+  font-weight: 500;
 }
 
-.resumenTableContainer {
+.miniCardTrend {
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 600;
+}
+
+.trendUp {
+  color: #34d399;
+}
+
+.trendDown {
+  color: #f87171;
+}
+
+/* ── Tarjeta 3: Productos Principales Tabla ───────────────────────────────── */
+.tableContainer {
   overflow-x: auto;
+  margin-top: 8px;
 }
 
-.resumenTable {
+.table {
   width: 100%;
   border-collapse: collapse;
+  text-align: left;
+  font-size: 13px;
+}
+
+.table th {
+  padding: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: #a0aec0;
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+}
+
+.table td {
+  padding: 14px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  color: #ffffff;
+  vertical-align: middle;
+}
+
+.table tr:hover td {
+  background-color: rgba(255, 255, 255, 0.01);
+}
+
+.progressBarContainer {
+  width: 100%;
+  height: 6px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+  overflow: hidden;
+  max-width: 120px;
+}
+
+.progressBar {
+  height: 100%;
+  border-radius: 3px;
+}
+
+/* ── Tarjeta 5: Ingresos & Gauge ───────────────────────────────────────────── */
+.earningsContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  height: 100%;
+}
+
+.earningsInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.earningsValue {
+  font-size: 28px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.earningsText {
+  font-size: 13px;
+  color: #a0aec0;
+  line-height: 1.5;
+}
+
+.gaugeWrapper {
+  width: 140px;
+  height: 90px;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.gaugeCenterText {
+  position: absolute;
+  bottom: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+/* ── Gráficos ───────────────────────────────────────────────────────────────── */
+.chartWrapper {
+  width: 100%;
+  height: 240px;
+}
+
+/* ── Tabs Placeholder ─────────────────────────────────────────────────────── */
+.placeholderContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  gap: 16px;
+  background-color: #171821;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  text-align: center;
+}
+
+.placeholderIcon {
+  width: 64px;
+  height: 64px;
+  background: rgba(52, 211, 153, 0.1);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #34d399;
+}
+
+.placeholderTitle {
+  font-size: 20px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+}
+
+.placeholderDesc {
+  font-size: 14px;
+  color: #a0aec0;
+  max-width: 400px;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ── Vista de Perfil Personalizada ─────────────────────────────────────────── */
+.profileGrid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 24px;
+}
+
+.profileCardLeft {
+  grid-column: span 4;
+  background-color: #171821;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+}
+
+.profileAvatarLarge {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #34d399, #059669);
+  color: #ffffff;
+  font-size: 36px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(52, 211, 153, 0.3);
+}
+
+.profileNameLarge {
+  font-size: 20px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+}
+
+.profileRoleBadge {
+  background: rgba(52, 211, 153, 0.15);
+  color: #34d399;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 12px;
+}
+
+.profileCardRight {
+  grid-column: span 8;
+  background-color: #171821;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 24px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.formLabel {
+  font-size: 13px;
+  font-weight: 500;
+  color: #a0aec0;
+}
+
+.formInput {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 12px;
+  border-radius: 8px;
+  color: #ffffff;
   font-size: 14px;
 }
 
-.rth {
-  background: #1E3A8A;
-  color: #FFFFFF;
-  padding: 12px 16px;
-  text-align: left;
-  font-size: 13px;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.4px;
-  white-space: nowrap;
+.formInput:focus {
+  border-color: #34d399;
+  outline: none;
 }
 
-.rtr {
-  transition: background 0.12s ease;
-}
-
-.rtr:hover {
-  background: #EFF6FF;
-}
-
-.rtrAlt {
-  background: #F8FAFC;
-}
-
-.rtrAlt:hover {
-  background: #EFF6FF;
-}
-
-.rtd {
-  padding: 12px 16px;
-  color: #334155;
-  border-bottom: 1px solid #E2E8F0;
-  white-space: nowrap;
-  vertical-align: middle;
-  height: 52px;
-}
-
-.estadoBadge {
-  display: inline-block;
-  padding: 3px 10px;
-  border-radius: 12px;
-  font-size: 12px;
+.saveBtn {
+  background-color: #34d399;
+  color: #13131a;
+  border: none;
   font-weight: 600;
-  white-space: nowrap;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.saveBtn:hover {
+  opacity: 0.9;
 }
 
 /* ── Mobile overlay ─────────────────────────────────────────────────────────── */
@@ -152,30 +389,36 @@
   display: none;
 }
 
-/* ── Animaciones ────────────────────────────────────────────────────────────── */
-@keyframes sectionIn {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0);    }
+/* ── Responsive ─────────────────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .span6 {
+    grid-column: span 12;
+  }
+  .miniCardsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .profileCardLeft, .profileCardRight {
+    grid-column: span 12;
+  }
 }
 
-/* ── Responsive ─────────────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .content {
-    padding: 20px 16px;
-    gap: 20px;
+    padding: 16px;
+    gap: 16px;
   }
 
   .mobileOverlay {
     display: block;
     position: fixed;
     inset: 0;
-    background: rgba(15, 23, 42, 0.45);
+    background: rgba(0, 0, 0, 0.6);
     z-index: 99;
   }
 }
 
 @media (max-width: 480px) {
-  .content {
-    padding: 16px 12px;
+  .miniCardsGrid {
+    grid-template-columns: 1fr;
   }
 }

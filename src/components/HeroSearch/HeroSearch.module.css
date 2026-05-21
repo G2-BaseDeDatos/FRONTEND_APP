@@ -1,4 +1,4 @@
-/* HeroSearch.module.css */
+/* HeroSearch.module.css — Dark Theme */
 
 .wrapper {
   position: relative;
@@ -12,24 +12,24 @@
   display: flex;
   align-items: center;
   height: 58px;
-  background: #FFFFFF;
-  border: 2px solid #CBD5E1;
+  background: rgba(23, 24, 33, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 29px;
   padding: 0 20px;
   gap: 12px;
-  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.06);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
 }
 
 .inputContainer:focus-within,
 .inputOpen {
-  border-color: #3B82F6;
-  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12),
-              0px 4px 16px rgba(0, 0, 0, 0.06);
+  border-color: rgba(52, 211, 153, 0.4);
+  box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.1),
+              0px 4px 16px rgba(0, 0, 0, 0.2);
 }
 
 .lupaIcon {
-  color: #94A3B8;
+  color: #a0aec0;
   flex-shrink: 0;
 }
 
@@ -40,11 +40,11 @@
   background: transparent;
   font-size: 17px;
   font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
-  color: #1E293B;
+  color: #ffffff;
 }
 
 .input::placeholder {
-  color: #94A3B8;
+  color: #4a5568;
 }
 
 /* Quitar el ícono nativo del tipo search en Chrome */
@@ -54,7 +54,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  color: #94A3B8;
+  color: #a0aec0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -63,12 +63,12 @@
   border-radius: 50%;
   padding: 0;
   flex-shrink: 0;
-  transition: background 0.15s ease, color 0.15s ease;
+  transition: all 0.15s ease;
 }
 
 .limpiarBtn:hover {
-  background: #F1F5F9;
-  color: #475569;
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
 }
 
 /* ── Dropdown de resultados ──────────────────────────────────────────────────── */
@@ -77,10 +77,10 @@
   top: calc(100% + 8px);
   left: 0;
   right: 0;
-  background: #FFFFFF;
-  border: 1px solid #E2E8F0;
+  background: #171821;
+  border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 14px;
-  box-shadow: 0px 12px 32px rgba(0, 0, 0, 0.12);
+  box-shadow: 0px 12px 32px rgba(0, 0, 0, 0.4);
   list-style: none;
   padding: 6px 0;
   margin: 0;
@@ -100,15 +100,15 @@
 
 .dropdownItem:hover,
 .dropdownItemSel {
-  background: #F8FAFC;
+  background: rgba(255, 255, 255, 0.03);
 }
 
 .dropdownAvatar {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #DBEAFE, #EFF6FF);
-  color: #1E40AF;
+  background: rgba(52, 211, 153, 0.1);
+  color: #34d399;
   font-size: 14px;
   font-weight: 700;
   display: flex;
@@ -127,7 +127,7 @@
 .dropdownNombre {
   font-size: 14px;
   font-weight: 500;
-  color: #1E293B;
+  color: #ffffff;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -135,14 +135,14 @@
 
 .dropdownCat {
   font-size: 12px;
-  color: #64748B;
+  color: #a0aec0;
 }
 
 .dropdownDisp {
   font-size: 11px;
   font-weight: 600;
-  color: #15803D;
-  background: #DCFCE7;
+  color: #34d399;
+  background: rgba(52, 211, 153, 0.1);
   padding: 2px 8px;
   border-radius: 10px;
   white-space: nowrap;
