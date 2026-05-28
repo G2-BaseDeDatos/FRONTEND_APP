@@ -2,6 +2,7 @@ import { useState, useCallback, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { loginUsuario } from '../../services/authService';
+import { GraduationCap, Eye, EyeOff, AlertCircle, Loader2 } from 'lucide-react';
 import styles from './Login.module.css';
 
 // ──────────────────────────────────────────────────────────────────────────────
@@ -71,20 +72,22 @@ export default function Login() {
   const [mostrarPass, setMostrarPass] = useState(false);
 
   // ── Estado de UX ───────────────────────────────────────────────────────────
-  const [rolDetectado,   setRolDetectado]   = useState(null);   // { label, tipo }
+  const [rolDetectado,   setRolDetectado]   = useState(null);
   const [errorCorreo,    setErrorCorreo]    = useState('');
   const [errorGeneral,   setErrorGeneral]   = useState('');
   const [cargando,       setCargando]       = useState(false);
   const [shakeError,     setShakeError]     = useState(false);
   const [tarjetaVisible, setTarjetaVisible] = useState(false);
+  const [formVisible,    setFormVisible]    = useState(false);
 
   const correoRef    = useRef(null);
   const contrasenaRef = useRef(null);
 
-  // Animación de entrada de la tarjeta
+  // Animación de entrada escalonada
   useEffect(() => {
-    const timer = setTimeout(() => setTarjetaVisible(true), 50);
-    return () => clearTimeout(timer);
+    const t1 = setTimeout(() => setTarjetaVisible(true), 50);
+    const t2 = setTimeout(() => setFormVisible(true), 350);
+    return () => { clearTimeout(t1); clearTimeout(t2); };
   }, []);
 
   // ── Detección de rol en tiempo real mientras escribe ───────────────────────
@@ -115,7 +118,6 @@ export default function Login() {
     async (e) => {
       e.preventDefault();
 
-      // Validación local antes de llamar al backend
       if (!REGEX_EMAIL.test(correo)) {
         setErrorCorreo('Ingresa un correo electrónico válido');
         correoRef.current?.focus();
@@ -131,16 +133,10 @@ export default function Login() {
       setErrorGeneral('');
 
       try {
-        // POST /api/auth/login → { cor_usu, pas_usu }
         const { token, usuario } = await loginUsuario(correo, contrasena);
-
-        // Guardar sesión en contexto + localStorage
         guardarSesion(token, usuario);
-
-        // Redirección según rol devuelto por el backend (usuario.rol)
         const ruta = RUTAS_POR_ROL[usuario.rol] || RUTAS_POR_ROL.default;
         navigate(ruta, { replace: true });
-
       } catch (err) {
         const status  = err?.status;
         const mensaje = err?.message || 'Error de conexión, inténtalo de nuevo';
@@ -161,9 +157,8 @@ export default function Login() {
 
   // ── Placeholder "Solicitar acceso" ─────────────────────────────────────────
   const handleSolicitarAcceso = useCallback(() => {
-    // TODO: reemplazar por modal o redirección al formulario de solicitud
     alert(
-      '📋 Para solicitar acceso al Sistema de Inventario Académico GITT, ' +
+      'Para solicitar acceso al Sistema de Inventario Académico GITT, ' +
       'comunícate con el administrador del sistema o envía tu solicitud al ' +
       'correo: soporte@gitt.edu'
     );
@@ -188,12 +183,7 @@ export default function Login() {
         {/* ── Cabecera ──────────────────────────────────────────────────── */}
         <div className={styles.cabecera}>
           <div className={styles.iconoWrapper} aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" className={styles.iconoAcademico}>
-              <path d="M12 3L1 9l11 6 11-6-11-6z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"/>
-              <path d="M5 12v5c0 2 3 4 7 4s7-2 7-4v-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-              <circle cx="19" cy="9" r="1" fill="currentColor"/>
-              <line x1="19" y1="10" x2="19" y2="15" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-            </svg>
+            <GraduationCap size={28} className={styles.iconoAcademico} />
           </div>
           <h1 className={styles.titulo}>Sistema de Inventario Académico</h1>
           <p className={styles.subtitulo}>Inicio de Sesión</p>
@@ -205,6 +195,11 @@ export default function Login() {
           onSubmit={handleSubmit}
           noValidate
           aria-label="Formulario de inicio de sesión"
+          style={{
+            opacity: formVisible ? 1 : 0,
+            transform: formVisible ? 'translateY(0)' : 'translateY(15px)',
+            transition: 'opacity 0.4s ease, transform 0.4s ease',
+          }}
         >
           {/* Campo Correo */}
           <div className={styles.campoGrupo}>
@@ -274,17 +269,9 @@ export default function Login() {
                 disabled={cargando}
               >
                 {mostrarPass ? (
-                  // Ojo tachado — contraseña visible
-                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <line x1="1" y1="1" x2="23" y2="23" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                  </svg>
+                  <EyeOff size={20} />
                 ) : (
-                  // Ojo abierto — contraseña oculta
-                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2"/>
-                  </svg>
+                  <Eye size={20} />
                 )}
               </button>
             </div>
@@ -293,11 +280,7 @@ export default function Login() {
           {/* Error general (credenciales / red) */}
           {errorGeneral && (
             <div className={errorClase} role="alert" aria-live="assertive">
-              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className={styles.iconoError}>
-                <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2"/>
-                <line x1="12" y1="8" x2="12" y2="12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                <circle cx="12" cy="16" r="1" fill="currentColor"/>
-              </svg>
+              <AlertCircle size={18} className={styles.iconoError} />
               {errorGeneral}
             </div>
           )}
@@ -312,7 +295,7 @@ export default function Login() {
           >
             {cargando ? (
               <span className={styles.estadoCarga}>
-                <span className={styles.spinner} aria-hidden="true" />
+                <Loader2 size={20} className={styles.spinner} aria-hidden="true" />
                 Ingresando…
               </span>
             ) : (
@@ -320,14 +303,14 @@ export default function Login() {
             )}
           </button>
 
-          {/* Enlace Solicitar acceso */}
+          {/* Enlaces Footer */}
           <div className={styles.enlacesFooter}>
             <button
               type="button"
               className={styles.enlaceTexto}
               onClick={handleSolicitarAcceso}
               tabIndex={0}
-              aria-label="Solicitar acceso al sistema"
+              aria-label="Recuperar contraseña"
             >
               ¿Olvidaste tu contraseña?
             </button>

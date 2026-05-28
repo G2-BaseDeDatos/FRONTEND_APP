@@ -1,22 +1,21 @@
-/* EquipmentCard.module.css */
+/* EquipmentCard.module.css — Dark Theme */
 
 /* ── Tarjeta ─────────────────────────────────────────────────────────────────── */
 .card {
-  background: #FFFFFF;
+  background: rgba(23, 24, 33, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 14px;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.06);
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: transform 0.22s ease, box-shadow 0.22s ease;
+  transition: all 0.22s ease;
   animation: fadeInUp 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
-  border: 1.5px solid transparent;
 }
 
 .card:hover {
   transform: translateY(-4px);
-  box-shadow: 0px 10px 24px rgba(30, 58, 138, 0.10);
-  border-color: #BFDBFE;
+  box-shadow: 0px 10px 24px rgba(0, 0, 0, 0.3);
+  border-color: rgba(52, 211, 153, 0.2);
 }
 
 /* ── Área de imagen ───────────────────────────────────────────────────────────── */
@@ -25,6 +24,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  background: rgba(52, 211, 153, 0.03);
 }
 
 /* ── Cuerpo de la tarjeta ─────────────────────────────────────────────────────── */
@@ -38,8 +38,8 @@
 
 .catBadge {
   display: inline-block;
-  background: #DBEAFE;
-  color: #1E40AF;
+  background: rgba(52, 211, 153, 0.1);
+  color: #34d399;
   border-radius: 20px;
   padding: 2px 10px;
   font-size: 11px;
@@ -52,7 +52,7 @@
 .nombre {
   font-size: 15px;
   font-weight: 600;
-  color: #1E293B;
+  color: #ffffff;
   margin: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -63,23 +63,23 @@
 
 .codigo {
   font-size: 11px;
-  color: #94A3B8;
+  color: #64748b;
   font-family: ui-monospace, Consolas, monospace;
   margin: 0;
 }
 
 .ubicacion {
   font-size: 12px;
-  color: #64748B;
+  color: #a0aec0;
   margin: 0;
 }
 
 /* Error local */
 .errorMsg {
   font-size: 12px;
-  color: #DC2626;
+  color: #f87171;
   margin: 0;
-  background: #FEF2F2;
+  background: rgba(248, 113, 113, 0.08);
   border-radius: 6px;
   padding: 4px 8px;
 }
@@ -95,29 +95,30 @@
   margin-top: 6px;
   border: none;
   border-radius: 8px;
-  background: #3B82F6;
-  color: #FFFFFF;
+  background: linear-gradient(135deg, #34d399, #059669);
+  color: #13131a;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   font-family: inherit;
-  transition: background 0.18s ease, transform 0.15s ease, box-shadow 0.18s ease;
-  box-shadow: 0px 4px 10px rgba(59, 130, 246, 0.30);
+  transition: all 0.18s ease;
+  box-shadow: 0px 4px 10px rgba(52, 211, 153, 0.2);
 }
 
 .btnSolicitar:hover:not(:disabled) {
-  background: #2563EB;
   transform: scale(1.02);
-  box-shadow: 0px 6px 16px rgba(37, 99, 235, 0.35);
+  box-shadow: 0px 6px 16px rgba(52, 211, 153, 0.3);
 }
 
 .btnSolicitar:disabled {
   cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .btnSolicitado {
-  background: #10B981 !important;
-  box-shadow: 0px 4px 10px rgba(16, 185, 129, 0.25) !important;
+  background: rgba(52, 211, 153, 0.15) !important;
+  color: #34d399 !important;
+  box-shadow: none !important;
 }
 
 .spinner {
@@ -126,15 +127,15 @@
 
 /* ── Skeleton ─────────────────────────────────────────────────────────────────── */
 .skeleton {
-  background: #FFFFFF;
+  background: rgba(23, 24, 33, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.03);
   border-radius: 14px;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.06);
   overflow: hidden;
 }
 
 .skeletonImg {
   height: 160px;
-  background: linear-gradient(90deg, #E2E8F0 25%, #F1F5F9 50%, #E2E8F0 75%);
+  background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0.03) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.4s ease-in-out infinite;
 }
@@ -149,7 +150,7 @@
 .skLine {
   height: 14px;
   border-radius: 4px;
-  background: linear-gradient(90deg, #E2E8F0 25%, #F1F5F9 50%, #E2E8F0 75%);
+  background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0.03) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.4s ease-in-out infinite;
 }

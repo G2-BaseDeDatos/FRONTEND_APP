@@ -66,13 +66,11 @@ export async function fetchArticulosPorCategoria(idCategoria) {
 // ──────────────────────────────────────────────────────────────────────────────
 
 /**
- * TODO: Implementar cuando exista GET /api/prestamos/mis-prestamos
- * La respuesta esperada incluirá: id_pre, nom_art, fec_ini_pre, fec_fin_pre, est_pre
- * Por ahora redirige a fetchArticulosAsignados().
+ * Obtiene los préstamos (equipos asignados) al usuario autenticado.
+ * Endpoint: GET /api/prestamos/mis-prestamos
+ * Respuesta esperada: { ID_PRE, FSA_PRE, FPR_PRE, EST_PRE, ID_ART, NOM_ART, COD_ART }[]
  */
-export async function fetchMisPrestamos(idUsuario) {
-  // Cuando el backend lo implemente:
-  // const res = await api.get('/api/prestamos/mis-prestamos');
-  // return res.data.data || [];
-  return fetchArticulosAsignados(idUsuario);
+export async function fetchMisPrestamos() {
+  const res = await api.get('/api/prestamos/mis-prestamos');
+  return res.data.data || [];
 }

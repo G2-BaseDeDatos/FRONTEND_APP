@@ -1,0 +1,67 @@
+Objetivo: Rediseñar el panel de administrador (Dashboard) existente en este proyecto React, aplicando un diseño moderno en modo oscuro (dark theme) basado en una referencia visual, y asegurando que toda la interfaz esté estrictamente en español.
+
+Instrucciones paso a paso:
+
+Localización y Contexto:
+Primeramente, explora el código fuente y localiza dónde está implementado actualmente el panel de administrador (busca rutas como /admin, /dashboard, o componentes llamados AdminPanel, DashboardLayout, etc.). Analiza cómo se están renderizando los datos actualmente para mantener la lógica de negocio si es posible, o prepara el componente para recibir 'mock data' estructurada.
+
+Instalación de Dependencias:
+Para hacer que el dashboard sea real, interactivo y eficiente, instala las siguientes librerías de frontend (si no están ya en el package.json):
+
+'recharts' o 'chart.js' (con 'react-chartjs-2') para los gráficos interactivos. Recharts es preferible por su integración declarativa con React.
+
+'lucide-react' o 'react-icons' para la iconografía.
+
+Asegúrate de que el proyecto pueda manejar los estilos eficientemente (usa Tailwind CSS si ya está configurado en el proyecto, de lo contrario, utiliza CSS modular o styled-components según la convención del repositorio).
+
+Estructura y Traducción de la Interfaz:
+Reemplaza la vista actual construyendo la siguiente estructura, utilizando colores oscuros para el fondo (ej. #1e1e2d o similar) y acentos de color (verde menta, naranja, celeste, morado) para los gráficos. Usa los siguientes textos en español:
+
+A. Barra Lateral Izquierda (Sidebar):
+
+Encabezado: "Tablero" (Dashboard)
+
+Menú: "Perfil", "Clasificación", "Pedidos", "Productos", "Reporte de Ventas", "Mensajes", "Configuración", "Favoritos", "Historial".
+
+Pie de menú: "Cerrar Sesión".
+
+B. Cabecera (Top Bar):
+
+Barra de búsqueda con el texto: "Buscar aquí..."
+
+Icono de notificaciones (campana) y avatar de perfil de usuario.
+
+C. Grid de Contenido Principal:
+Crea un grid responsivo que contenga las siguientes tarjetas (cards):
+
+Tarjeta 1: "Ventas de Hoy" (Today's Sales)
+Subtítulo: "Resumen de ventas". Contiene 4 mini-tarjetas:
+
+Ventas Totales: $5k (+10% desde ayer)
+
+Pedidos Totales: 500 (+8% desde ayer)
+
+Productos Vendidos: 9 (+2% desde ayer)
+
+Nuevos Clientes: 12 (+3% desde ayer)
+
+Tarjeta 2: "Nivel" (Level)
+Un gráfico de barras comparativo. Leyendas: "Volumen" y "Servicio".
+
+Tarjeta 3: "Productos Principales" (Top Products)
+Una tabla con las columnas: "#", "Nombre", "Popularidad" (renderiza una barra de progreso de color) y "Ventas".
+Ejemplos de filas: "Decoración del Hogar", "Vestido de Princesa", "Esenciales de Baño", "Reloj Inteligente".
+
+Tarjeta 4: "Satisfacción del Cliente" (Customer Fulfilment)
+Un gráfico de área con dos líneas superpuestas. Leyendas: "Mes Pasado" ($4,087) y "Este Mes" ($5,506).
+
+Tarjeta 5: "Ingresos" (Earnings)
+Subtítulo: "Gastos Totales". Valor: "$6078.76".
+Texto: "El beneficio es 48% mayor que el mes pasado".
+Gráfico: Un medidor radial (semi-círculo) marcando "80%".
+
+Tarjeta 6: "Estadísticas de Visitantes" (Visitor Insights)
+Un gráfico de líneas interactivo mostrando los meses en el eje X (Ene, Feb, Mar, Abr, May, Jun, Jul, Ago, Sep, Oct, Nov, Dic). Leyenda superior: "Nuevos Visitantes".
+
+Ejecución y Pruebas:
+Una vez que hayas construido e integrado el diseño con datos simulados (mock data) para los gráficos, levanta el entorno de desarrollo (ejecuta 'npm run dev' o 'npm start'). Verifica en la terminal que no haya errores de dependencias y comprueba que la interfaz renderice correctamente, que los gráficos animen al cargar, y que el layout sea coherente con un panel administrativo moderno.

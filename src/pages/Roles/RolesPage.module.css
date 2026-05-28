@@ -1,0 +1,123 @@
+.pageContainer {
+  padding: 24px 32px;
+  max-width: 1400px;
+  margin: 0 auto;
+  font-family: 'Inter', system-ui, sans-serif;
+  color: #1E293B;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 24px;
+}
+
+.titleGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.title {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: #0F172A;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.subtitle {
+  margin: 0;
+  font-size: 14px;
+  color: #64748B;
+}
+
+/* Tabla */
+.tableContainer {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  border: 1px solid #E2E8F0;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.th {
+  background-color: #F8FAFC;
+  color: #475569;
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 16px 20px;
+  border-bottom: 1px solid #E2E8F0;
+}
+
+.tr {
+  transition: background-color 0.15s;
+  border-bottom: 1px solid #F1F5F9;
+}
+
+.tr:last-child {
+  border-bottom: none;
+}
+
+.tr:hover {
+  background-color: #F8FAFC;
+}
+
+.td {
+  padding: 16px 20px;
+  font-size: 14px;
+  color: #1E293B;
+  vertical-align: middle;
+}
+
+/* Badge de Rol */
+.badgeRol {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.Administrador { background: #FEE2E2; color: #991B1B; }
+.Docente { background: #DBEAFE; color: #1E3A8A; }
+.Estudiante { background: #D1FAE5; color: #065F46; }
+
+.skeletonRow td {
+  padding: 16px 24px;
+}
+
+.skeletonCell {
+  height: 20px;
+  background: linear-gradient(90deg, #F1F5F9 25%, #E2E8F0 50%, #F1F5F9 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.emptyState {
+  padding: 60px 20px;
+  text-align: center;
+  color: #64748B;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}

@@ -2,14 +2,16 @@ import { useState, useMemo } from 'react';
 import { X, AlertCircle, Loader2 } from 'lucide-react';
 import styles from './PrestamosPage.module.css';
 
-export default function PrestamoFormModal({ usuarios, articulos, onClose, onSave }) {
+export default function PrestamoFormModal({ usuarios, articulos, preselectedArticleId, onClose, onSave }) {
   const [formData, setFormData] = useState({
     id_usu: '',
     fsa_pre: new Date().toISOString().split('T')[0], // Hoy
     fpr_pre: '',
   });
 
-  const [articulosSeleccionados, setArticulosSeleccionados] = useState([]);
+  const [articulosSeleccionados, setArticulosSeleccionados] = useState(
+    preselectedArticleId ? [preselectedArticleId] : []
+  );
   const [busquedaArt, setBusquedaArt] = useState('');
 
   const [loading, setLoading] = useState(false);

@@ -10,9 +10,12 @@ import styles from './TeacherNavbar.module.css';
 // ──────────────────────────────────────────────────────────────────────────────
 
 const NAV_LINKS = [
-  { label: 'Inicio',          to: '/dashboard/docente',             exact: true  },
-  { label: 'Mis Préstamos',   to: '/dashboard/docente/prestamos',   exact: false },
-  { label: 'Catálogo',        to: '/dashboard/docente/catalogo',    exact: false },
+  { label: 'Inicio',          to: '/dashboard/docente',                exact: true  },
+  { label: 'Mis Préstamos',   to: '/dashboard/docente/prestamos',      exact: false },
+  { label: 'Mantenimientos',  to: '/dashboard/docente/mantenimientos', exact: false },
+  { label: 'Usuarios',        to: '/dashboard/docente/usuarios',       exact: false },
+  { label: 'Roles',           to: '/dashboard/docente/roles',          exact: false },
+  { label: 'Catálogo',        to: '/dashboard/docente/catalogo',       exact: false },
 ];
 
 export default function TeacherNavbar() {
@@ -47,7 +50,7 @@ export default function TeacherNavbar() {
         {/* ── Logo ────────────────────────────────────────────────────────── */}
         <NavLink to="/dashboard/docente" className={styles.logo} aria-label="Inicio">
           <div className={styles.logoIcon} aria-hidden="true">
-            <GraduationCap size={18} color="#3B82F6" />
+            <GraduationCap size={18} color="#34d399" />
           </div>
           <span className={styles.logoText}>Inventario Académico</span>
         </NavLink>

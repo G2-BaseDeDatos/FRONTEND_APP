@@ -1,71 +1,75 @@
 import { useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
-  LayoutDashboard,
+  User,
+  BarChart2,
+  ShoppingBag,
   Package,
-  BookOpen,
-  Wrench,
-  ClipboardList,
-  Users,
-  FolderOpen,
-  MapPin,
+  TrendingUp,
+  Mail,
+  Settings,
+  Heart,
+  History,
   ChevronLeft,
   ChevronRight,
-  GraduationCap,
   LogOut,
+  LayoutDashboard,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import styles from './Sidebar.module.css';
 
 // ──────────────────────────────────────────────────────────────────────────────
-// Definición de módulos del menú lateral.
-// "to" debe coincidir con las rutas declaradas en App.jsx.
+// Definición de módulos del menú lateral requeridos para el rediseño.
 // ──────────────────────────────────────────────────────────────────────────────
 const MENU_ITEMS = [
   {
-    label: 'Dashboard',
-    to:    '/dashboard/admin',
-    icon:  LayoutDashboard,
-    exact: true,
+    label: 'Perfil',
+    id:    'perfil',
+    icon:  User,
   },
   {
-    label: 'Inventario',
-    to:    '/dashboard/admin/inventario',
+    label: 'Clasificación',
+    id:    'clasificacion',
+    icon:  BarChart2,
+  },
+  {
+    label: 'Pedidos',
+    id:    'pedidos',
+    icon:  ShoppingBag,
+  },
+  {
+    label: 'Productos',
+    id:    'productos',
     icon:  Package,
   },
   {
-    label: 'Préstamos',
-    to:    '/dashboard/admin/prestamos',
-    icon:  BookOpen,
+    label: 'Reporte de Ventas',
+    id:    'reporte_ventas',
+    icon:  TrendingUp,
   },
   {
-    label: 'Mantenimiento',
-    to:    '/dashboard/admin/mantenimiento',
-    icon:  Wrench,
+    label: 'Mensajes',
+    id:    'mensajes',
+    icon:  Mail,
   },
   {
-    label: 'Movimientos',
-    to:    '/dashboard/admin/movimientos',
-    icon:  ClipboardList,
+    label: 'Configuración',
+    id:    'configuracion',
+    icon:  Settings,
   },
   {
-    label: 'Usuarios',
-    to:    '/dashboard/admin/usuarios',
-    icon:  Users,
+    label: 'Favoritos',
+    id:    'favoritos',
+    icon:  Heart,
   },
   {
-    label: 'Categorías',
-    to:    '/dashboard/admin/categorias',
-    icon:  FolderOpen,
-  },
-  {
-    label: 'Ubicaciones',
-    to:    '/dashboard/admin/ubicaciones',
-    icon:  MapPin,
+    label: 'Historial',
+    id:    'historial',
+    icon:  History,
   },
 ];
 
-export default function Sidebar({ collapsed, onToggle }) {
+export default function Sidebar({ collapsed, onToggle, activeItem, onSelect }) {
   const { cerrarSesion, usuario } = useAuth();
   const navigate = useNavigate();
 
@@ -77,17 +81,20 @@ export default function Sidebar({ collapsed, onToggle }) {
   return (
     <aside className={`${styles.sidebar} ${collapsed ? styles.collapsed : ''}`}>
 
-      {/* ── Logo / Nombre del sistema ──────────────────────────────────────── */}
-      <div className={styles.logoArea}>
+      {/* ── Logo / Nombre del sistema (Encabezado: Tablero) ────────────────── */}
+      <div className={styles.logoArea} onClick={() => onSelect('tablero')} style={{ cursor: 'pointer' }}>
         <div className={styles.logoIcon} aria-hidden="true">
-          <GraduationCap size={22} color="#60A5FA" />
+          <LayoutDashboard size={20} color="#34d399" />
         </div>
         {!collapsed && (
-          <span className={styles.logoText}>Inventario Académico</span>
+          <span className={styles.logoText}>Tablero</span>
         )}
         <button
           className={styles.toggleBtn}
-          onClick={onToggle}
+          onClick={(e) => {
+            e.stopPropagation();
+            onToggle();
+          }}
           aria-label={collapsed ? 'Expandir menú' : 'Colapsar menú'}
         >
           {collapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
@@ -97,16 +104,20 @@ export default function Sidebar({ collapsed, onToggle }) {
       {/* ── Navegación ────────────────────────────────────────────────────── */}
       <nav className={styles.nav} aria-label="Menú principal del administrador">
         <ul className={styles.navList} role="list">
-          {MENU_ITEMS.map(({ label, to, icon: Icon, exact }) => (
-            <li key={to}>
-              <NavLink
-                to={to}
-                end={exact}
-                className={({ isActive }) =>
-                  `${styles.navItem} ${isActive ? styles.navItemActive : ''}`
-                }
+          {MENU_ITEMS.map(({ label, id, icon: Icon }) => (
+            <li key={id}>
+              <button
+                onClick={() => onSelect(id)}
+                className={`${styles.navItem} ${activeItem === id ? styles.navItemActive : ''}`}
                 title={collapsed ? label : undefined}
                 aria-label={label}
+                style={{
+                  width: '100%',
+                  background: 'none',
+                  border: 'none',
+                  textAlign: 'left',
+                  cursor: 'pointer',
+                }}
               >
                 <span className={styles.navIcon} aria-hidden="true">
                   <Icon size={20} />
@@ -114,7 +125,7 @@ export default function Sidebar({ collapsed, onToggle }) {
                 {!collapsed && (
                   <span className={styles.navLabel}>{label}</span>
                 )}
-              </NavLink>
+              </button>
             </li>
           ))}
         </ul>
@@ -140,7 +151,7 @@ export default function Sidebar({ collapsed, onToggle }) {
           title="Cerrar sesión"
         >
           <LogOut size={18} />
-          {!collapsed && <span>Salir</span>}
+          {!collapsed && <span>Cerrar Sesión</span>}
         </button>
       </div>
 

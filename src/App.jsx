@@ -3,6 +3,8 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import Login                from './pages/Login/Login';
 import AdminDashboardPage   from './pages/Dashboard/DashboardAdmin';
 import UsuariosPage         from './pages/Usuarios/UsuariosPage';
+import RolesPage            from './pages/Roles/RolesPage';
+import CatalogoDocente      from './pages/Catalogo/CatalogoDocente';
 import InventarioPage       from './pages/Inventario/InventarioPage';
 import PrestamosPage        from './pages/Prestamos/PrestamosPage';
 import MantenimientoPage    from './pages/Mantenimiento/MantenimientoPage';
@@ -11,6 +13,9 @@ import CategoriasPage       from './pages/Categorias/CategoriasPage';
 import UbicacionesPage      from './pages/Ubicaciones/UbicacionesPage';
 import DashboardDocente     from './pages/Dashboard/DashboardDocente';
 import DashboardEstudiante  from './pages/Dashboard/DashboardEstudiante';
+import MisPrestamosEstudiante from './pages/Prestamos/MisPrestamosEstudiante';
+import CatalogoEstudiante     from './pages/Catalogo/CatalogoEstudiante';
+import DetalleArticuloEstudiante from './pages/Catalogo/DetalleArticuloEstudiante';
 
 // ──────────────────────────────────────────────────────────────────────────────
 // Placeholder genérico para módulos futuros del panel de administrador.
@@ -115,10 +120,16 @@ export default function App() {
             path="/dashboard/docente"
             element={<RutaProtegida><DashboardDocente /></RutaProtegida>}
           >
-            {/* Ruta: /dashboard/docente/prestamos → mis préstamos (futuro) */}
-            <Route path="prestamos"          element={<ModuloPlaceholder nombre="Mis Préstamos" />} />
+            {/* Ruta: /dashboard/docente/prestamos → mis préstamos y globales */}
+            <Route path="prestamos"          element={<PrestamosPage />} />
+            {/* Ruta: /dashboard/docente/mantenimientos → gestión de reparaciones */}
+            <Route path="mantenimientos"     element={<MantenimientoPage />} />
+            {/* Ruta: /dashboard/docente/usuarios → vista de solo lectura */}
+            <Route path="usuarios"           element={<UsuariosPage />} />
+            {/* Ruta: /dashboard/docente/roles → vista de solo lectura */}
+            <Route path="roles"              element={<RolesPage />} />
             {/* Ruta: /dashboard/docente/catalogo  → catálogo de equipos */}
-            <Route path="catalogo"           element={<ModuloPlaceholder nombre="Catálogo de Equipos" />} />
+            <Route path="catalogo"           element={<CatalogoDocente />} />
             {/* Ruta: /dashboard/docente/articulo/:id → detalle de artículo */}
             <Route path="articulo/:id"       element={<ModuloPlaceholder nombre="Detalle del Artículo" />} />
           </Route>
@@ -129,9 +140,9 @@ export default function App() {
             path="/dashboard/estudiante"
             element={<RutaProtegida><DashboardEstudiante /></RutaProtegida>}
           >
-            <Route path="mis-prestamos" element={<ModuloPlaceholder nombre="Mis Préstamos" />} />
-            <Route path="catalogo"      element={<ModuloPlaceholder nombre="Catálogo" />} />
-            <Route path="articulo/:id"  element={<ModuloPlaceholder nombre="Detalle del Artículo" />} />
+            <Route path="mis-prestamos" element={<MisPrestamosEstudiante />} />
+            <Route path="catalogo"      element={<CatalogoEstudiante />} />
+            <Route path="articulo/:id"  element={<DetalleArticuloEstudiante />} />
           </Route>
 
           {/* ── Fallbacks ─────────────────────────────────────────────── */}

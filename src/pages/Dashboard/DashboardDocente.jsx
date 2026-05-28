@@ -1,13 +1,14 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useNavigate, Outlet } from 'react-router-dom';
-import { BookOpen, Compass, AlertCircle, RefreshCw } from 'lucide-react';
+import { useNavigate, Outlet, useLocation } from 'react-router-dom';
+import { BookOpen, Compass, AlertCircle, RefreshCw, PackageOpen } from 'lucide-react';
 import { useAuth }          from '../../context/AuthContext';
 import TeacherNavbar        from '../../components/TeacherNavbar/TeacherNavbar';
 import ActiveLoanCard, { ActiveLoanCardSkeleton }
                             from '../../components/ActiveLoanCard/ActiveLoanCard';
 import CategoryGrid         from '../../components/CategoryGrid/CategoryGrid';
-import { fetchArticulosAsignados, fetchCategorias }
+import { fetchMisPrestamos, fetchCategorias }
                             from '../../services/teacherService';
+import ArticleDetailModal   from '../../components/ArticleDetailModal/ArticleDetailModal';
 import styles               from './TeacherDashboardPage.module.css';
 
 // ──────────────────────────────────────────────────────────────────────────────
@@ -16,10 +17,10 @@ import styles               from './TeacherDashboardPage.module.css';
 // Ruta: /dashboard/docente
 //
 // Datos cargados al montar (paralelas):
-//   1. fetchArticulosAsignados(id_usu)
-//      → GET /api/articulos?responsable={id_usu}
-//      → Artículos cuyo responsable es el docente autenticado
-//      → Sustituye a GET /api/prestamos/mis-prestamos (futuro)
+//   1. fetchMisPrestamos()
+//      → GET /api/prestamos/mis-prestamos
+//      → Préstamos asignados al docente autenticado
+//      → Sustituye a la anterior llamada de artículos
 //
 //   2. fetchCategorias()
 //      → GET /api/categorias
@@ -34,6 +35,7 @@ import styles               from './TeacherDashboardPage.module.css';
 export default function TeacherDashboardPage() {
   const { usuario, estaAutenticado, cerrarSesion } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   // ── Estado ────────────────────────────────────────────────────────────────
   const [articulos,      setArticulos]      = useState([]);
@@ -42,6 +44,8 @@ export default function TeacherDashboardPage() {
   const [cargandoCat,    setCargandoCat]    = useState(true);
   const [errorGlobal,    setErrorGlobal]    = useState('');
   const [mounted,        setMounted]        = useState(false);
+  const [selectedArticle, setSelectedArticle] = useState(null);
+  const [isModalOpen,    setIsModalOpen]    = useState(false);
 
   // ── Guard de rol ──────────────────────────────────────────────────────────
   useEffect(() => {
@@ -64,13 +68,16 @@ export default function TeacherDashboardPage() {
     setCargandoArt(true);
     setCargandoCat(true);
 
-    // Petición 1: artículos asignados al docente
-    // Usa usuario.id_usu del token JWT — no requiere llamada extra a /api/usuarios/me
-    fetchArticulosAsignados(usuario?.id_usu)
-      .then(setArticulos)
+    // Petición 1: préstamos activos del docente
+    fetchMisPrestamos()
+      .then((data) => {
+        // Filtrar préstamos no devueltos
+        const activos = data.filter(p => p.EST_PRE !== 'Devuelto');
+        setArticulos(activos);
+      })
       .catch((err) => {
         if (err?.status === 401) { cerrarSesion(); navigate('/login', { replace: true }); }
-        else setErrorGlobal('No se pudieron cargar tus artículos asignados');
+        else setErrorGlobal('No se pudieron cargar tus préstamos activos');
       })
       .finally(() => setCargandoArt(false));
 
@@ -97,8 +104,12 @@ export default function TeacherDashboardPage() {
   const primerNombre = usuario?.nom_usu?.split(' ')[0] ?? 'Docente';
 
   // ── Separar artículos prestados de los disponibles ────────────────────────
-  const articulosPrestados  = articulos.filter(a => a.EST_ART === 'Prestado');
-  const articulosAsignados  = articulos; // todos los asignados como responsable
+  // En este punto articulos contiene los prestamos activos, que tienen estructura:
+  // { ID_PRE, FSA_PRE, FPR_PRE, EST_PRE, ID_ART, NOM_ART, COD_ART }
+  const articulosAsignados  = articulos;
+
+  // ── Determinar si estamos en la raíz del dashboard ───────────────────────
+  const isHome = location.pathname === '/dashboard/docente' || location.pathname === '/dashboard/docente/';
 
   // ── Render ─────────────────────────────────────────────────────────────────
   return (
@@ -106,8 +117,9 @@ export default function TeacherDashboardPage() {
       {/* Navbar superior horizontal */}
       <TeacherNavbar />
 
-      <main className={`${styles.content} ${mounted ? styles.contentVisible : ''}`}>
-        <div className={styles.inner}>
+      {isHome && (
+        <main className={`${styles.content} ${mounted ? styles.contentVisible : ''}`}>
+          <div className={styles.inner}>
 
           {/* ── Banner de error ──────────────────────────────────────────── */}
           {errorGlobal && (
@@ -125,7 +137,7 @@ export default function TeacherDashboardPage() {
           <div className={styles.header}>
             <div>
               <h1 className={styles.saludo}>
-                ¡Hola, <span className={styles.saludoNombre}>{primerNombre}</span> 👋
+                ¡Hola, <span className={styles.saludoNombre}>{primerNombre}</span>!
               </h1>
               <p className={styles.saludoSub}>
                 Estos son los equipos que tienes asignados y las categorías disponibles para explorar.
@@ -160,7 +172,9 @@ export default function TeacherDashboardPage() {
             ) : articulosAsignados.length === 0 ? (
               /* Estado vacío elegante */
               <div className={styles.emptyLoans}>
-                <div className={styles.emptyIcon} aria-hidden="true">📦</div>
+                <div className={styles.emptyIcon} aria-hidden="true" style={{ color: '#a0aec0' }}>
+                  <PackageOpen size={48} />
+                </div>
                 <h3 className={styles.emptyTitle}>No tienes equipos asignados actualmente</h3>
                 <p className={styles.emptySubtitle}>
                   Cuando se te asigne un artículo, aparecerá aquí con su información completa.
@@ -178,13 +192,22 @@ export default function TeacherDashboardPage() {
               </div>
             ) : (
               <div className={styles.loansContainer}>
-                {articulosAsignados.map((art, idx) => (
+                {articulosAsignados.map((art) => (
                   <ActiveLoanCard
-                    key={art.ID_ART}
-                    prestamo={art}
+                    key={art.ID_PRE + '-' + art.ID_ART}
+                    prestamo={{
+                      ...art,
+                      NOM_CAT: 'Categoría por defecto', // El backend no devuelve NOM_CAT en este endpoint aún
+                      NOM_UBI: 'Ubicación asignada',
+                      fec_fin_pre: art.FPR_PRE
+                    }}
                     onClick={() => {
-                      // Navegación al detalle del artículo — módulo futuro
-                      navigate(`/dashboard/docente/articulo/${art.ID_ART}`);
+                      setSelectedArticle({
+                        ...art,
+                        fec_fin_pre: art.FPR_PRE,
+                        fec_ini_pre: art.FSA_PRE
+                      });
+                      setIsModalOpen(true);
                     }}
                   />
                 ))}
@@ -218,9 +241,21 @@ export default function TeacherDashboardPage() {
 
         </div>
       </main>
+      )}
 
       {/* Sub-rutas: /catalogo, /prestamos, /articulo/:id */}
       <Outlet />
+
+      {/* Modal de Detalle de Artículo */}
+      {isModalOpen && selectedArticle && (
+        <ArticleDetailModal
+          article={selectedArticle}
+          onClose={() => {
+            setIsModalOpen(false);
+            setSelectedArticle(null);
+          }}
+        />
+      )}
     </div>
   );
 }
