@@ -23,49 +23,52 @@ import styles from './Sidebar.module.css';
 // ──────────────────────────────────────────────────────────────────────────────
 const MENU_ITEMS = [
   {
-    label: 'Perfil',
-    id:    'perfil',
-    icon:  User,
-  },
-  {
-    label: 'Clasificación',
-    id:    'clasificacion',
+    label: 'Tablero',
+    id:    'admin',
+    path:  '/dashboard/admin',
     icon:  BarChart2,
   },
   {
-    label: 'Pedidos',
-    id:    'pedidos',
-    icon:  ShoppingBag,
+    label: 'Usuarios',
+    id:    'usuarios',
+    path:  '/dashboard/admin/usuarios',
+    icon:  User,
   },
   {
-    label: 'Productos',
-    id:    'productos',
+    label: 'Inventario',
+    id:    'inventario',
+    path:  '/dashboard/admin/inventario',
     icon:  Package,
   },
   {
-    label: 'Reporte de Ventas',
-    id:    'reporte_ventas',
-    icon:  TrendingUp,
+    label: 'Préstamos',
+    id:    'prestamos',
+    path:  '/dashboard/admin/prestamos',
+    icon:  History,
   },
   {
-    label: 'Mensajes',
-    id:    'mensajes',
-    icon:  Mail,
-  },
-  {
-    label: 'Configuración',
-    id:    'configuracion',
+    label: 'Mantenimiento',
+    id:    'mantenimiento',
+    path:  '/dashboard/admin/mantenimiento',
     icon:  Settings,
   },
   {
-    label: 'Favoritos',
-    id:    'favoritos',
-    icon:  Heart,
+    label: 'Movimientos',
+    id:    'movimientos',
+    path:  '/dashboard/admin/movimientos',
+    icon:  TrendingUp,
   },
   {
-    label: 'Historial',
-    id:    'historial',
-    icon:  History,
+    label: 'Categorías',
+    id:    'categorias',
+    path:  '/dashboard/admin/categorias',
+    icon:  ShoppingBag,
+  },
+  {
+    label: 'Ubicaciones',
+    id:    'ubicaciones',
+    path:  '/dashboard/admin/ubicaciones',
+    icon:  Heart, // Or any other icon
   },
 ];
 
@@ -82,7 +85,7 @@ export default function Sidebar({ collapsed, onToggle, activeItem, onSelect }) {
     <aside className={`${styles.sidebar} ${collapsed ? styles.collapsed : ''}`}>
 
       {/* ── Logo / Nombre del sistema (Encabezado: Tablero) ────────────────── */}
-      <div className={styles.logoArea} onClick={() => onSelect('tablero')} style={{ cursor: 'pointer' }}>
+      <div className={styles.logoArea} onClick={() => navigate('/dashboard/admin')} style={{ cursor: 'pointer' }}>
         <div className={styles.logoIcon} aria-hidden="true">
           <LayoutDashboard size={20} color="#34d399" />
         </div>
@@ -104,10 +107,10 @@ export default function Sidebar({ collapsed, onToggle, activeItem, onSelect }) {
       {/* ── Navegación ────────────────────────────────────────────────────── */}
       <nav className={styles.nav} aria-label="Menú principal del administrador">
         <ul className={styles.navList} role="list">
-          {MENU_ITEMS.map(({ label, id, icon: Icon }) => (
+          {MENU_ITEMS.map(({ label, id, path, icon: Icon }) => (
             <li key={id}>
               <button
-                onClick={() => onSelect(id)}
+                onClick={() => navigate(path)}
                 className={`${styles.navItem} ${activeItem === id ? styles.navItemActive : ''}`}
                 title={collapsed ? label : undefined}
                 aria-label={label}

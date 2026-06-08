@@ -41,58 +41,44 @@ export async function fetchCategorias() {
 }
 
 /**
- * Mis préstamos activos (o historial).
- * Si el backend soporta GET /api/prestamos/mis-prestamos, lo usaremos.
- * De lo contrario, usamos un filtro temporal.
+ * Mis préstamos activos (historial real desde BD).
  */
-export async function fetchMisPrestamos(idUsuario) {
+export async function fetchMisPrestamos() {
   try {
-    // Intentar endpoint real si existe (Fase 2)
-    // const res = await api.get('/api/prestamos/mis-prestamos');
-    // return res.data.data || [];
-
-    // Fallback: buscar artículos que el estudiante tiene asignados actualmente.
-    const res = await api.get('/api/articulos', {
-      params: { estado: 'Prestado', responsable: idUsuario },
-    });
-    // Formatear para que parezca un préstamo
-    return (res.data.data || []).map(art => ({
-      ID_PRE: `PRE-${art.ID_ART}`,
-      ID_ART: art.ID_ART,
-      NOM_ART: art.NOM_ART,
-      COD_ART: art.COD_ART,
-      FEC_INI_PRE: new Date().toISOString(), // Simulado
-      FEC_FIN_PRE: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString(), // Simulado 3 días
-      EST_PRE: 'Aprobado' // Simulado
-    }));
+    const res = await api.get('/api/prestamos/mis-prestamos');
+    return res.data.data || [];
   } catch {
     return [];
   }
 }
 
 /**
- * Solicita el préstamo de un artículo (STUB).
+ * Solicita el préstamo de un artículo para el usuario autenticado.
+ * Endpoint: POST /api/prestamos/solicitar
+ * @param {number} idArticulo
+ * @param {string} fechaRetorno - YYYY-MM-DD (opcional, por defecto 7 días)
  */
-export async function solicitarPrestamo(idArticulo) {
-  await new Promise((resolve) => setTimeout(resolve, 800));
-  return { success: true, message: 'Solicitud enviada correctamente' };
+export async function solicitarPrestamo(idArticulo, fechaRetorno = null) {
+  const body = { id_art: idArticulo };
+  if (fechaRetorno) body.fpr_pre = fechaRetorno;
+  const res = await api.post('/api/prestamos/solicitar', body);
+  return res.data;
 }
 
 /**
- * Obtiene las notificaciones del estudiante. (STUB)
+ * Obtiene las notificaciones del estudiante.
  * Endpoint: GET /api/notificaciones/mis-notificaciones
  */
 export async function fetchNotificaciones() {
-  // Simulación temporal hasta que exista en el backend
-  await new Promise(r => setTimeout(r, 400));
-  return []; 
+  const res = await api.get('/api/notificaciones/mis-notificaciones');
+  return res.data.data || [];
 }
 
 /**
- * Marca una notificación como leída. (STUB)
+ * Marca una notificación como leída.
  * Endpoint: PUT /api/notificaciones/:id/leer
  */
 export async function marcarNotificacionLeida(idNotificacion) {
-  await new Promise(r => setTimeout(r, 300));
-  return { success: true };
+  const res = await api.put(`/api/notificaciones/${idNotificacion}/leer`);
+  return res.data;
 }

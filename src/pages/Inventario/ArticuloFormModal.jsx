@@ -168,22 +168,7 @@ export default function ArticuloFormModal({ articulo, categorias, ubicaciones, u
                 />
               </div>
 
-              <div className={styles.formGroup}>
-                <label htmlFor="est_art" className={styles.formLabel}>Estado *</label>
-                <select
-                  id="est_art"
-                  name="est_art"
-                  className={styles.formSelect}
-                  value={formData.est_art}
-                  onChange={handleChange}
-                  required
-                >
-                  <option value="Disponible">Disponible</option>
-                  <option value="Prestado">Prestado</option>
-                  <option value="Mantenimiento">Mantenimiento</option>
-                  <option value="Baja">Baja</option>
-                </select>
-              </div>
+
 
               <div className={styles.formGroupFull}>
                 <label htmlFor="imagen" className={styles.formLabel}>

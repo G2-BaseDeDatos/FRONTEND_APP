@@ -32,3 +32,13 @@ export async function devolverPrestamo(id) {
   const res = await api.put(`/api/prestamos/${id}/devolucion`);
   return res.data;
 }
+
+/**
+ * Aprueba un préstamo pendiente.
+ * Pasa el préstamo de 'Pendiente' a 'Activo'.
+ * @param {number} id - ID del préstamo
+ */
+export async function aprobarPrestamo(id) {
+  const res = await api.put(`/api/prestamos/${id}/aprobar`);
+  return res.data;
+}

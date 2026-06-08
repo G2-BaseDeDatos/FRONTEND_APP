@@ -33,10 +33,8 @@ export default function MisPrestamosEstudiante() {
 
   const prestamosFiltrados = useMemo(() => {
     return prestamos.filter(p => {
-      // Usaremos EST_PRE para filtrar si estuviera disponible.
-      // Como usamos un mock que devuelve 'Aprobado', por defecto caerán en 'Activos'.
-      if (filtroTab === 'Activos') return p.EST_PRE === 'Aprobado' || p.EST_PRE === 'Prestado';
-      if (filtroTab === 'Pendientes') return p.EST_PRE === 'Solicitado';
+      if (filtroTab === 'Activos') return p.EST_PRE === 'Activo';
+      if (filtroTab === 'Pendientes') return p.EST_PRE === 'Pendiente';
       if (filtroTab === 'Finalizados') return p.EST_PRE === 'Devuelto' || p.EST_PRE === 'Rechazado';
       return true;
     });

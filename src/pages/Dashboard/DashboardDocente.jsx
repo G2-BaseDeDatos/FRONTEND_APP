@@ -151,72 +151,7 @@ export default function TeacherDashboardPage() {
             </div>
           </div>
 
-          {/* ── Sección: Artículos Asignados / Préstamos ─────────────────── */}
-          <section aria-label="Equipos asignados">
-            <div className={styles.sectionHeader}>
-              <h2 className={styles.sectionTitle}>
-                <BookOpen size={20} aria-hidden="true" />
-                Mis Artículos Asignados
-              </h2>
-              {!cargandoArt && articulosAsignados.length > 0 && (
-                <span className={styles.contadorBadge}>{articulosAsignados.length}</span>
-              )}
-            </div>
 
-            {cargandoArt ? (
-              <div className={styles.loansContainer}>
-                {Array.from({ length: 3 }).map((_, i) => (
-                  <ActiveLoanCardSkeleton key={i} />
-                ))}
-              </div>
-            ) : articulosAsignados.length === 0 ? (
-              /* Estado vacío elegante */
-              <div className={styles.emptyLoans}>
-                <div className={styles.emptyIcon} aria-hidden="true" style={{ color: '#a0aec0' }}>
-                  <PackageOpen size={48} />
-                </div>
-                <h3 className={styles.emptyTitle}>No tienes equipos asignados actualmente</h3>
-                <p className={styles.emptySubtitle}>
-                  Cuando se te asigne un artículo, aparecerá aquí con su información completa.
-                </p>
-                <button
-                  className={styles.explorarBtn}
-                  onClick={() => {
-                    const catSection = document.getElementById('seccion-categorias');
-                    catSection?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                >
-                  <Compass size={16} aria-hidden="true" />
-                  Explorar categorías
-                </button>
-              </div>
-            ) : (
-              <div className={styles.loansContainer}>
-                {articulosAsignados.map((art) => (
-                  <ActiveLoanCard
-                    key={art.ID_PRE + '-' + art.ID_ART}
-                    prestamo={{
-                      ...art,
-                      NOM_CAT: 'Categoría por defecto', // El backend no devuelve NOM_CAT en este endpoint aún
-                      NOM_UBI: 'Ubicación asignada',
-                      fec_fin_pre: art.FPR_PRE
-                    }}
-                    onClick={() => {
-                      setSelectedArticle({
-                        ...art,
-                        fec_fin_pre: art.FPR_PRE,
-                        fec_ini_pre: art.FSA_PRE
-                      });
-                      setIsModalOpen(true);
-                    }}
-                  />
-                ))}
-              </div>
-            )}
-          </section>
-
-          {/* ── Separador visual ─────────────────────────────────────────── */}
-          <div className={styles.divider} aria-hidden="true" />
 
           {/* ── Sección: Categorías de Equipos ───────────────────────────── */}
           <section id="seccion-categorias" aria-label="Catálogo de categorías de equipos">

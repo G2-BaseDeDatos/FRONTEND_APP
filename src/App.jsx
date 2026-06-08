@@ -124,10 +124,7 @@ export default function App() {
             <Route path="prestamos"          element={<PrestamosPage />} />
             {/* Ruta: /dashboard/docente/mantenimientos → gestión de reparaciones */}
             <Route path="mantenimientos"     element={<MantenimientoPage />} />
-            {/* Ruta: /dashboard/docente/usuarios → vista de solo lectura */}
-            <Route path="usuarios"           element={<UsuariosPage />} />
-            {/* Ruta: /dashboard/docente/roles → vista de solo lectura */}
-            <Route path="roles"              element={<RolesPage />} />
+
             {/* Ruta: /dashboard/docente/catalogo  → catálogo de equipos */}
             <Route path="catalogo"           element={<CatalogoDocente />} />
             {/* Ruta: /dashboard/docente/articulo/:id → detalle de artículo */}

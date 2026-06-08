@@ -5,6 +5,13 @@ import styles from './CatalogoDocente.module.css';
 import { fetchArticulos } from '../../services/articulosService';
 import ArticleDetailModal from '../../components/ArticleDetailModal/ArticleDetailModal';
 
+const BACKEND_URL = import.meta.env.VITE_API_URL || 'http://localhost:3006';
+function resolveImageUrl(url) {
+  if (!url) return null;
+  if (url.startsWith('http://') || url.startsWith('https://')) return url;
+  return `${BACKEND_URL}${url}`;
+}
+
 export default function CatalogoDocente() {
   const [articulos, setArticulos] = useState([]);
   const [cargando, setCargando] = useState(true);
@@ -95,17 +102,27 @@ export default function CatalogoDocente() {
         ) : (
           articulosFiltrados.map(art => {
             const isDisponible = art.EST_ART === 'Disponible';
+            const imgUrl = resolveImageUrl(art.IMAGEN_URL);
             return (
               <div 
                 key={art.ID_ART} 
                 className={styles.card}
                 onClick={() => handleCardClick(art)}
               >
-                <div className={styles.cardHeader}>
-                  <div className={styles.iconWrapper}>
-                    <PackageOpen size={24} color={isDisponible ? '#10B981' : '#64748B'} />
-                  </div>
-                  <span className={`${styles.badgeEstado} ${styles[art.EST_ART] || ''}`}>
+                <div className={styles.cardHeader} style={imgUrl ? { padding: 0, overflow: 'hidden', height: '120px' } : {}}>
+                  {imgUrl ? (
+                    <img 
+                      src={imgUrl} 
+                      alt={art.NOM_ART} 
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                      onError={(e) => { e.target.parentElement.style.padding = ''; e.target.remove(); }}
+                    />
+                  ) : (
+                    <div className={styles.iconWrapper}>
+                      <PackageOpen size={24} color={isDisponible ? '#10B981' : '#64748B'} />
+                    </div>
+                  )}
+                  <span className={`${styles.badgeEstado} ${styles[art.EST_ART] || ''}`} style={imgUrl ? { position: 'absolute', top: 8, right: 8 } : {}}>
                     {art.EST_ART}
                   </span>
                 </div>

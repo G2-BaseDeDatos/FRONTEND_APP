@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { Search, Plus, CheckCircle, Clock } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styles from './PrestamosPage.module.css';
-import { fetchPrestamos, crearPrestamo, devolverPrestamo } from '../../services/prestamosService';
+import { fetchPrestamos, crearPrestamo, devolverPrestamo, aprobarPrestamo } from '../../services/prestamosService';
 import { fetchUsuarios } from '../../services/usuariosService';
 import { fetchArticulos } from '../../services/articulosService';
 import PrestamoFormModal from './PrestamoFormModal';
@@ -21,6 +21,7 @@ export default function PrestamosPage() {
   // Modales
   const [modalForm, setModalForm] = useState({ isOpen: false, preselectedArticleId: null });
   const [modalConfirm, setModalConfirm] = useState({ isOpen: false, prestamo: null });
+  const [modalConfirmAprobar, setModalConfirmAprobar] = useState({ isOpen: false, prestamo: null });
 
   // Toast
   const [toast, setToast] = useState(null);
@@ -34,7 +35,9 @@ export default function PrestamosPage() {
         fetchArticulos({ estado: 'Disponible' }) // Solo los que se pueden prestar
       ]);
       setPrestamos(dataPrestamos);
-      setUsuarios(dataUsuarios);
+      // Filtrar para que solo los estudiantes puedan ser seleccionados para recibir un préstamo
+      const soloEstudiantes = dataUsuarios.filter(u => u.NOM_ROL === 'Estudiante');
+      setUsuarios(soloEstudiantes);
       setArticulosDisponibles(dataArticulos);
     } catch (error) {
       mostrarToast('Error al cargar datos del servidor', 'error');
@@ -100,6 +103,23 @@ export default function PrestamosPage() {
     } catch (error) {
       mostrarToast(error.response?.data?.message || 'Error al procesar devolución', 'error');
       setModalConfirm({ isOpen: false, prestamo: null });
+    }
+  };
+
+  // Manejadores Aprobación
+  const handleAbrirConfirmAprobar = (prestamo) => {
+    setModalConfirmAprobar({ isOpen: true, prestamo });
+  };
+
+  const handleConfirmarAprobacion = async () => {
+    try {
+      await aprobarPrestamo(modalConfirmAprobar.prestamo.ID_PRE);
+      mostrarToast('Préstamo aprobado correctamente');
+      setModalConfirmAprobar({ isOpen: false, prestamo: null });
+      cargarDatos();
+    } catch (error) {
+      mostrarToast(error.response?.data?.message || 'Error al aprobar préstamo', 'error');
+      setModalConfirmAprobar({ isOpen: false, prestamo: null });
     }
   };
 
@@ -197,15 +217,27 @@ export default function PrestamosPage() {
                       </span>
                     </td>
                     <td className={styles.td}>
-                      <button 
-                        className={styles.btnAccionSuccess}
-                        onClick={() => handleAbrirConfirm(p)}
-                        disabled={isDevuelto}
-                        title={isDevuelto ? "Este préstamo ya está inactivo" : "Marcar como devuelto"}
-                      >
-                        <CheckCircle size={16} />
-                        Recibir
-                      </button>
+                      {p.EST_PRE === 'Pendiente' ? (
+                        <button 
+                          className={styles.btnAccionPrimary}
+                          onClick={() => handleAbrirConfirmAprobar(p)}
+                          title="Aprobar préstamo"
+                          style={{ background: '#3B82F6', color: '#fff', border: 'none', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}
+                        >
+                          <CheckCircle size={16} />
+                          Aprobar
+                        </button>
+                      ) : (
+                        <button 
+                          className={styles.btnAccionSuccess}
+                          onClick={() => handleAbrirConfirm(p)}
+                          disabled={isDevuelto}
+                          title={isDevuelto ? "Este préstamo ya está inactivo" : "Marcar como devuelto"}
+                        >
+                          <CheckCircle size={16} />
+                          Recibir
+                        </button>
+                      )}
                     </td>
                   </tr>
                 );
@@ -233,6 +265,16 @@ export default function PrestamosPage() {
         type="success"
         onConfirm={handleConfirmarDevolucion}
         onCancel={() => setModalConfirm({ isOpen: false, prestamo: null })}
+      />
+
+      <ConfirmModal
+        isOpen={modalConfirmAprobar.isOpen}
+        title="Confirmar Aprobación"
+        message={`¿Estás seguro de Aprobar el préstamo #${modalConfirmAprobar.prestamo?.ID_PRE} a nombre de ${modalConfirmAprobar.prestamo?.NOM_USU}? El estado cambiará a Activo y el estudiante podrá retirar el equipo.`}
+        confirmText="Sí, Aprobar préstamo"
+        type="success"
+        onConfirm={handleConfirmarAprobacion}
+        onCancel={() => setModalConfirmAprobar({ isOpen: false, prestamo: null })}
       />
 
       {toast && (

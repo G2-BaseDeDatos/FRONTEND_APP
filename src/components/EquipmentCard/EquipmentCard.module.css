@@ -2,8 +2,8 @@
 
 /* ── Tarjeta ─────────────────────────────────────────────────────────────────── */
 .card {
-  background: rgba(23, 24, 33, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: #ffffff;
+  border: 1px solid #E2E8F0;
   border-radius: 14px;
   overflow: hidden;
   display: flex;
@@ -24,7 +24,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(52, 211, 153, 0.03);
+  background: #F8FAFC;
 }
 
 /* ── Cuerpo de la tarjeta ─────────────────────────────────────────────────────── */
@@ -38,8 +38,8 @@
 
 .catBadge {
   display: inline-block;
-  background: rgba(52, 211, 153, 0.1);
-  color: #34d399;
+  background: #ECFDF5;
+  color: #059669;
   border-radius: 20px;
   padding: 2px 10px;
   font-size: 11px;
@@ -52,7 +52,7 @@
 .nombre {
   font-size: 15px;
   font-weight: 600;
-  color: #ffffff;
+  color: #0F172A;
   margin: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -63,14 +63,14 @@
 
 .codigo {
   font-size: 11px;
-  color: #64748b;
+  color: #64748B;
   font-family: ui-monospace, Consolas, monospace;
   margin: 0;
 }
 
 .ubicacion {
   font-size: 12px;
-  color: #a0aec0;
+  color: #64748B;
   margin: 0;
 }
 
@@ -95,8 +95,8 @@
   margin-top: 6px;
   border: none;
   border-radius: 8px;
-  background: linear-gradient(135deg, #34d399, #059669);
-  color: #13131a;
+  background: #3B82F6;
+  color: #ffffff;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
@@ -107,7 +107,7 @@
 
 .btnSolicitar:hover:not(:disabled) {
   transform: scale(1.02);
-  box-shadow: 0px 6px 16px rgba(52, 211, 153, 0.3);
+  background: #2563EB;
 }
 
 .btnSolicitar:disabled {
@@ -116,8 +116,8 @@
 }
 
 .btnSolicitado {
-  background: rgba(52, 211, 153, 0.15) !important;
-  color: #34d399 !important;
+  background: #EFF6FF !important;
+  color: #3B82F6 !important;
   box-shadow: none !important;
 }
 
@@ -127,15 +127,15 @@
 
 /* ── Skeleton ─────────────────────────────────────────────────────────────────── */
 .skeleton {
-  background: rgba(23, 24, 33, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.03);
+  background: #ffffff;
+  border: 1px solid #E2E8F0;
   border-radius: 14px;
   overflow: hidden;
 }
 
 .skeletonImg {
   height: 160px;
-  background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0.03) 75%);
+  background: linear-gradient(90deg, #F1F5F9 25%, #E2E8F0 50%, #F1F5F9 75%);
   background-size: 200% 100%;
   animation: shimmer 1.4s ease-in-out infinite;
 }
@@ -150,7 +150,7 @@
 .skLine {
   height: 14px;
   border-radius: 4px;
-  background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0.03) 75%);
+  background: linear-gradient(90deg, #F1F5F9 25%, #E2E8F0 50%, #F1F5F9 75%);
   background-size: 200% 100%;
   animation: shimmer 1.4s ease-in-out infinite;
 }

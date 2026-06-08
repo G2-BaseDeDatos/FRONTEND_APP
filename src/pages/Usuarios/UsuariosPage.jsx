@@ -76,7 +76,9 @@ export default function UsuariosPage() {
       if (modalForm.usuario) {
         // Actualizar
         const updateData = { ...formData };
-        delete updateData.pas_usu; // Oculto en modo edición
+        if (!updateData.pas_usu) {
+          delete updateData.pas_usu;
+        }
         await actualizarUsuario(modalForm.usuario.ID_USU, updateData);
         mostrarToast('Usuario actualizado exitosamente');
       } else {

@@ -2,6 +2,20 @@ import { useState } from 'react';
 import { Laptop, Cpu, Tablet, Package, Loader2 } from 'lucide-react';
 import styles from './EquipmentCard.module.css';
 
+// URL base del backend (misma que axiosClient)
+const BACKEND_URL = import.meta.env.VITE_API_URL || 'http://localhost:3006';
+
+/**
+ * Normaliza la URL de imagen:
+ * - Si ya es absoluta (http://...) la devuelve tal cual
+ * - Si es relativa (/uploads/...) le agrega el host del backend
+ */
+function resolveImageUrl(url) {
+  if (!url) return null;
+  if (url.startsWith('http://') || url.startsWith('https://')) return url;
+  return `${BACKEND_URL}${url}`;
+}
+
 // ──────────────────────────────────────────────────────────────────────────────
 // EquipmentCard.jsx — Tarjeta de equipo disponible
 //
@@ -73,7 +87,16 @@ export default function EquipmentCard({ articulo, yaSolicitado, onSolicitar, car
         style={{ background: bgForIdx(cardIdx) }}
         aria-hidden="true"
       >
-        <Icon size={40} color="#3B82F6" />
+        {resolveImageUrl(articulo.IMAGEN_URL) ? (
+          <img 
+            src={resolveImageUrl(articulo.IMAGEN_URL)} 
+            alt={articulo.NOM_ART} 
+            style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 0 }} 
+            onError={(e) => { e.target.style.display = 'none'; }}
+          />
+        ) : (
+          <Icon size={40} color="#3B82F6" />
+        )}
       </div>
 
       {/* Contenido */}

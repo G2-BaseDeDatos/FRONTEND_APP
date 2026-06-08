@@ -45,8 +45,12 @@ export default function UsuarioFormModal({ usuario, roles, onClose, onSave }) {
     e.preventDefault();
     setError('');
     
-    // Validación de contraseñas si no es edición
+    // Validación de contraseñas si no es edición o si el usuario llenó la clave en edición
     if (!isEditing && formData.pas_usu.length < 8) {
+      setError('La contraseña debe tener al menos 8 caracteres.');
+      return;
+    }
+    if (isEditing && formData.pas_usu.length > 0 && formData.pas_usu.length < 8) {
       setError('La contraseña debe tener al menos 8 caracteres.');
       return;
     }
@@ -150,21 +154,21 @@ export default function UsuarioFormModal({ usuario, roles, onClose, onSave }) {
               </span>
             </div>
 
-            {!isEditing && (
-              <div className={styles.formGroup}>
-                <label htmlFor="pas_usu" className={styles.formLabel}>Contraseña *</label>
-                <input
-                  type="password"
-                  id="pas_usu"
-                  name="pas_usu"
-                  className={styles.formInput}
-                  value={formData.pas_usu}
-                  onChange={handleChange}
-                  required
-                  placeholder="Mínimo 8 caracteres"
-                />
-              </div>
-            )}
+            <div className={styles.formGroup}>
+              <label htmlFor="pas_usu" className={styles.formLabel}>
+                Contraseña {isEditing ? '(Opcional: Dejar en blanco para mantener la actual)' : '*'}
+              </label>
+              <input
+                type="password"
+                id="pas_usu"
+                name="pas_usu"
+                className={styles.formInput}
+                value={formData.pas_usu}
+                onChange={handleChange}
+                required={!isEditing}
+                placeholder="Mínimo 8 caracteres"
+              />
+            </div>
           </div>
 
           <div className={styles.modalFooter}>

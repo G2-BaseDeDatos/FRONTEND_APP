@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Bell, ChevronDown, LogOut, GraduationCap, Menu, X } from 'lucide-react';
+import { Bell, ChevronDown, LogOut, GraduationCap, Menu, X, CheckCircle } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { fetchNotificaciones, marcarNotificacionLeida } from '../../services/notificacionesService';
 import styles from './TeacherNavbar.module.css';
 
 // ──────────────────────────────────────────────────────────────────────────────
@@ -9,32 +10,58 @@ import styles from './TeacherNavbar.module.css';
 // Sin sidebar; la navegación es horizontal compacta.
 // ──────────────────────────────────────────────────────────────────────────────
 
-const NAV_LINKS = [
-  { label: 'Inicio',          to: '/dashboard/docente',                exact: true  },
-  { label: 'Mis Préstamos',   to: '/dashboard/docente/prestamos',      exact: false },
-  { label: 'Mantenimientos',  to: '/dashboard/docente/mantenimientos', exact: false },
-  { label: 'Usuarios',        to: '/dashboard/docente/usuarios',       exact: false },
-  { label: 'Roles',           to: '/dashboard/docente/roles',          exact: false },
-  { label: 'Catálogo',        to: '/dashboard/docente/catalogo',       exact: false },
-];
-
 export default function TeacherNavbar() {
   const { usuario, cerrarSesion } = useAuth();
   const navigate = useNavigate();
 
+  const isEstudiante = usuario?.rol === 'Estudiante';
+  const prefix = isEstudiante ? '/dashboard/estudiante' : '/dashboard/docente';
+
+  const NAV_LINKS = [
+    { label: 'Inicio',          to: prefix,                exact: true  },
+    { label: 'Mis Préstamos',   to: `${prefix}/${isEstudiante ? 'mis-prestamos' : 'prestamos'}`, exact: false },
+    ...(isEstudiante ? [] : [{ label: 'Mantenimientos', to: `${prefix}/mantenimientos`, exact: false }]),
+    { label: 'Catálogo',        to: `${prefix}/catalogo`,       exact: false },
+  ];
+
   const [menuMovil,       setMenuMovil]       = useState(false);
   const [dropdownAbierto, setDropdownAbierto] = useState(false);
+  const [notifDropdownAbierto, setNotifDropdownAbierto] = useState(false);
+  const [notificaciones, setNotificaciones] = useState([]);
   const dropdownRef = useRef(null);
+  const notifRef = useRef(null);
 
   useEffect(() => {
     function handleClick(e) {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
         setDropdownAbierto(false);
       }
+      if (notifRef.current && !notifRef.current.contains(e.target)) {
+        setNotifDropdownAbierto(false);
+      }
     }
     document.addEventListener('mousedown', handleClick);
     return () => document.removeEventListener('mousedown', handleClick);
   }, []);
+
+  useEffect(() => {
+    if (usuario) {
+      fetchNotificaciones().then(setNotificaciones).catch(console.error);
+    }
+  }, [usuario]);
+
+  const handleLeer = async (id_not) => {
+    try {
+      await marcarNotificacionLeida(id_not);
+      setNotificaciones(prev => 
+        prev.map(n => n.ID_NOT === id_not ? { ...n, EST_NOT: 'Enviado' } : n)
+      );
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const noLeidas = notificaciones.filter(n => n.EST_NOT === 'Pendiente').length;
 
   const handleLogout = () => {
     cerrarSesion();
@@ -48,9 +75,9 @@ export default function TeacherNavbar() {
       <div className={styles.inner}>
 
         {/* ── Logo ────────────────────────────────────────────────────────── */}
-        <NavLink to="/dashboard/docente" className={styles.logo} aria-label="Inicio">
+        <NavLink to={prefix} className={styles.logo} aria-label="Inicio">
           <div className={styles.logoIcon} aria-hidden="true">
-            <GraduationCap size={18} color="#34d399" />
+            <GraduationCap size={18} color="#059669" />
           </div>
           <span className={styles.logoText}>Inventario Académico</span>
         </NavLink>
@@ -75,10 +102,47 @@ export default function TeacherNavbar() {
         <div className={styles.right}>
 
           {/* Campana animada */}
-          <button className={styles.bellBtn} aria-label="Notificaciones">
-            <Bell size={20} className={styles.bellIcon} />
-            <span className={styles.bellBadge} aria-hidden="true" />
-          </button>
+          <div className={styles.profileWrapper} ref={notifRef}>
+            <button 
+              className={styles.bellBtn} 
+              aria-label="Notificaciones"
+              onClick={() => setNotifDropdownAbierto(v => !v)}
+            >
+              <Bell size={20} className={styles.bellIcon} />
+              {noLeidas > 0 && <span className={styles.bellBadge}>{noLeidas}</span>}
+            </button>
+
+            {notifDropdownAbierto && (
+              <div 
+                className={styles.dropdown} 
+                style={{ right: 0, minWidth: '300px', padding: 0 }}
+                role="menu"
+              >
+                <div style={{ padding: '12px 16px', borderBottom: '1px solid #E2E8F0', background: '#ffffff', fontWeight: 600, color: '#0F172A', borderTopLeftRadius: '8px', borderTopRightRadius: '8px' }}>
+                  Notificaciones
+                </div>
+                <div style={{ maxHeight: '300px', overflowY: 'auto', background: '#ffffff', borderBottomLeftRadius: '8px', borderBottomRightRadius: '8px' }}>
+                  {notificaciones.length === 0 ? (
+                    <p style={{ padding: '16px', textAlign: 'center', color: '#64748B', margin: 0, fontSize: '14px' }}>No hay notificaciones</p>
+                  ) : (
+                    notificaciones.map(n => (
+                      <div key={n.ID_NOT} style={{ padding: '12px 16px', borderBottom: '1px solid #E2E8F0', display: 'flex', flexDirection: 'column', gap: '6px', background: n.EST_NOT === 'Pendiente' ? '#F8FAFC' : '#ffffff' }}>
+                        <p style={{ margin: 0, fontSize: '13px', color: '#334155' }}>{n.MEN_NOT}</p>
+                        {n.EST_NOT === 'Pendiente' && (
+                          <button 
+                            onClick={() => handleLeer(n.ID_NOT)}
+                            style={{ alignSelf: 'flex-start', background: 'none', border: 'none', color: '#0284C7', fontSize: '12px', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center', gap: '4px' }}
+                          >
+                            <CheckCircle size={12} /> Marcar como leída
+                          </button>
+                        )}
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
 
           {/* Avatar + dropdown */}
           <div className={styles.profileWrapper} ref={dropdownRef}>

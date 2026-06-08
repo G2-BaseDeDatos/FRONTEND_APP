@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
-import { useNavigate, Outlet } from 'react-router-dom';
-import { Package, AlertCircle, RefreshCw, PackageX } from 'lucide-react';
+import { useNavigate, Outlet, useLocation } from 'react-router-dom';
+import { Package, AlertCircle, RefreshCw, PackageX, Calendar, X as XIcon } from 'lucide-react';
 import { useAuth }          from '../../context/AuthContext';
 import TeacherNavbar        from '../../components/TeacherNavbar/TeacherNavbar';
 import HeroSearch           from '../../components/HeroSearch/HeroSearch';
@@ -39,6 +39,10 @@ export default function StudentDashboardPage() {
   const [solicitados,  setSolicitados]  = useState(new Set()); 
   const [toast,        setToast]        = useState(null);    
   const [mounted,      setMounted]      = useState(false);
+  // Modal solicitud
+  const [modalSolicitud, setModalSolicitud] = useState({ open: false, articulo: null });
+  const [fechaRetorno,   setFechaRetorno]   = useState('');
+  const [enviando,       setEnviando]       = useState(false);
 
   // ── Guard de rol ──────────────────────────────────────────────────────────
   useEffect(() => {
@@ -68,9 +72,16 @@ export default function StudentDashboardPage() {
       })
       .finally(() => setCargandoArt(false));
 
-    // Mis préstamos (artículos asignados)
+    // Mis préstamos activos (artículos asignados)
     fetchMisPrestamos(usuario?.id_usu)
-      .then(setPrestamos)
+      .then(data => {
+        const activos = data.filter(p => 
+          p.EST_PRE !== 'Devuelto' && 
+          p.EST_PRE !== 'Rechazado' && 
+          p.EST_PRE !== 'Finalizado'
+        );
+        setPrestamos(activos);
+      })
       .catch(() => setPrestamos([]))
       .finally(() => setCargandoPre(false));
 
@@ -99,8 +110,33 @@ export default function StudentDashboardPage() {
 
   // ── Solicitar préstamo ────────────────────────────────────────────────────
   const handleSolicitar = useCallback(async (idArticulo) => {
-    setToast({ mensaje: 'Funcionalidad de solicitud Próximamente', tipo: 'info' });
-  }, []);
+    // Buscar el artículo en la lista y abrir el modal
+    const art = articulos.find(a => a.ID_ART === idArticulo);
+    // Fecha mínima = mañana
+    const manana = new Date();
+    manana.setDate(manana.getDate() + 1);
+    setFechaRetorno(manana.toISOString().split('T')[0]);
+    setModalSolicitud({ open: true, articulo: art });
+  }, [articulos]);
+
+  const handleConfirmarSolicitud = async () => {
+    if (!modalSolicitud.articulo) return;
+    setEnviando(true);
+    try {
+      await solicitarPrestamo(modalSolicitud.articulo.ID_ART, fechaRetorno);
+      setSolicitados(prev => new Set([...prev, modalSolicitud.articulo.ID_ART]));
+      setToast({ mensaje: `✓ Solicitud de "${modalSolicitud.articulo.NOM_ART}" registrada correctamente`, tipo: 'success' });
+      setModalSolicitud({ open: false, articulo: null });
+      // Refrescar lista y préstamos
+      fetchArticulosDisponibles().then(setArticulos).catch(() => {});
+      fetchMisPrestamos().then(setPrestamos).catch(() => {});
+    } catch (err) {
+      const msg = err?.message || 'Error al procesar la solicitud';
+      setToast({ mensaje: msg, tipo: 'error' });
+    } finally {
+      setEnviando(false);
+    }
+  };
 
   // ── Click en resultado del dropdown → scroll a la tarjeta o filtrar ───────
   const handleResultClick = useCallback((art) => {
@@ -108,13 +144,16 @@ export default function StudentDashboardPage() {
   }, []);
 
   const primerNombre = usuario?.nom_usu?.split(' ')[0] ?? 'Estudiante';
+  const location = useLocation();
+  const isHome = location.pathname === '/dashboard/estudiante' || location.pathname === '/dashboard/estudiante/';
 
   // ── Render ────────────────────────────────────────────────────────────────
   return (
     <div className={styles.page}>
-      {/* Navbar horizontal (reutiliza el del docente con ajuste de links) */}
-      <StudentNavbar />
+      {/* Navbar horizontal (dinámico) */}
+      <TeacherNavbar />
 
+      {isHome && (
       <main className={`${styles.content} ${mounted ? styles.contentVisible : ''}`}>
         <div className={styles.inner}>
 
@@ -228,9 +267,90 @@ export default function StudentDashboardPage() {
 
         </div>
       </main>
+      )}
 
       {/* Sub-rutas: /mis-prestamos, /catalogo, etc. */}
       <Outlet />
+
+      {/* Modal de Solicitud de Préstamo */}
+      {modalSolicitud.open && modalSolicitud.articulo && (
+        <div style={{
+          position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', 
+          display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999
+        }}>
+          <div style={{
+            background: '#ffffff', borderRadius: '16px', padding: '32px', 
+            width: '90%', maxWidth: '440px', color: '#0F172A', position: 'relative',
+            boxShadow: '0 25px 50px rgba(0,0,0,0.5)'
+          }}>
+            <button 
+              onClick={() => setModalSolicitud({ open: false, articulo: null })}
+              style={{ position: 'absolute', top: 16, right: 16, background: 'none', border: 'none', color: '#64748B', cursor: 'pointer' }}
+            >
+              <XIcon size={20} />
+            </button>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
+              <div style={{ background: '#EFF6FF', color: '#3B82F6', borderRadius: 10, padding: 10 }}>
+                <Package size={24} />
+              </div>
+              <div>
+                <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>Solicitar Préstamo</h2>
+                <p style={{ margin: 0, color: '#64748B', fontSize: 13 }}>{modalSolicitud.articulo.NOM_ART}</p>
+              </div>
+            </div>
+
+            <div style={{ background: '#F8FAFC', borderRadius: 10, padding: '12px 16px', marginBottom: 20 }}>
+              <p style={{ margin: '0 0 4px', fontSize: 12, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Artículo</p>
+              <p style={{ margin: '0 0 4px', fontWeight: 600 }}>{modalSolicitud.articulo.NOM_ART}</p>
+              <p style={{ margin: 0, fontSize: 13, color: '#64748B' }}>
+                Cód: {modalSolicitud.articulo.COD_ART} &nbsp;·&nbsp; {modalSolicitud.articulo.NOM_CAT}
+              </p>
+              <p style={{ margin: '8px 0 0', fontSize: 13, color: '#64748B' }}>
+                📍 {modalSolicitud.articulo.NOM_UBI}
+              </p>
+            </div>
+
+            <div style={{ marginBottom: 24 }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, color: '#64748B', marginBottom: 8 }}>
+                <Calendar size={16} />
+                Fecha de devolución
+              </label>
+              <input
+                type="date"
+                value={fechaRetorno}
+                min={new Date(Date.now() + 86400000).toISOString().split('T')[0]}
+                onChange={(e) => setFechaRetorno(e.target.value)}
+                style={{
+                  width: '100%', padding: '10px 14px', borderRadius: 8,
+                  border: '1px solid #E2E8F0', background: '#F8FAFC', color: '#0F172A',
+                  fontSize: 14, outline: 'none', boxSizing: 'border-box'
+                }}
+              />
+            </div>
+
+            <div style={{ display: 'flex', gap: 12 }}>
+              <button
+                onClick={() => setModalSolicitud({ open: false, articulo: null })}
+                disabled={enviando}
+                style={{ flex: 1, padding: '12px', borderRadius: 8, border: '1px solid #E2E8F0', background: '#ffffff', color: '#64748B', cursor: 'pointer', fontSize: 14 }}
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={handleConfirmarSolicitud}
+                disabled={enviando || !fechaRetorno}
+                style={{ 
+                  flex: 2, padding: '12px', borderRadius: 8, border: 'none', 
+                  background: enviando ? '#93C5FD' : '#3b82f6', color: '#fff', 
+                  cursor: enviando ? 'not-allowed' : 'pointer', fontSize: 14, fontWeight: 600 
+                }}
+              >
+                {enviando ? 'Procesando...' : '✓ Confirmar Solicitud'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Toast de notificación */}
       {toast && (
@@ -244,143 +364,4 @@ export default function StudentDashboardPage() {
   );
 }
 
-// ──────────────────────────────────────────────────────────────────────────────
-// StudentNavbar — Adapta TeacherNavbar con links del rol Estudiante.
-// Reutiliza el mismo CSS Module de TeacherNavbar.
-// ──────────────────────────────────────────────────────────────────────────────
-import { useState as useStateNav, useRef as useRefNav, useEffect as useEffectNav } from 'react';
-import { NavLink } from 'react-router-dom';
-import { Bell, ChevronDown, LogOut, GraduationCap, Menu, X } from 'lucide-react';
-import { useAuth as useAuthNav } from '../../context/AuthContext';
-import navStyles from '../../components/TeacherNavbar/TeacherNavbar.module.css';
 
-const STUDENT_NAV = [
-  { label: 'Inicio',         to: '/dashboard/estudiante',              exact: true  },
-  { label: 'Mis Préstamos',  to: '/dashboard/estudiante/mis-prestamos',exact: false },
-  { label: 'Catálogo',       to: '/dashboard/estudiante/catalogo',     exact: false },
-];
-
-function StudentNavbar() {
-  const { usuario, cerrarSesion } = useAuthNav();
-  const nav = useNavigate();
-  const [menuMovil,       setMenuMovil]       = useStateNav(false);
-  const [dropdownAbierto, setDropdownAbierto] = useStateNav(false);
-  const [notificacionesAbiertas, setNotificacionesAbiertas] = useStateNav(false);
-  const dropdownRef = useRefNav(null);
-
-  useEffectNav(() => {
-    const h = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target))
-        setDropdownAbierto(false);
-    };
-    document.addEventListener('mousedown', h);
-    return () => document.removeEventListener('mousedown', h);
-  }, []);
-
-  const handleLogout = () => { cerrarSesion(); nav('/login', { replace: true }); };
-  const inicial = usuario?.nom_usu?.[0]?.toUpperCase() ?? 'E';
-
-  return (
-    <header className={navStyles.navbar}>
-      <div className={navStyles.inner}>
-        <NavLink to="/dashboard/estudiante" className={navStyles.logo} aria-label="Inicio">
-          <div className={navStyles.logoIcon}><GraduationCap size={18} color="#34d399" /></div>
-          <span className={navStyles.logoText}>Inventario Académico</span>
-        </NavLink>
-
-        <nav className={navStyles.navDesktop} aria-label="Navegación del estudiante">
-          {STUDENT_NAV.map(({ label, to, exact }) => (
-            <NavLink
-              key={to} to={to} end={exact}
-              className={({ isActive }) =>
-                `${navStyles.navLink} ${isActive ? navStyles.navLinkActive : ''}`
-              }
-            >{label}</NavLink>
-          ))}
-        </nav>
-
-        <div className={navStyles.right}>
-          <div className={navStyles.profileWrapper} style={{ position: 'relative' }}>
-            <button 
-              className={navStyles.bellBtn} 
-              aria-label="Notificaciones"
-              onClick={() => setNotificacionesAbiertas(v => !v)}
-            >
-              <Bell size={20} className={navStyles.bellIcon} />
-              <span className={navStyles.bellBadge} aria-hidden="true" />
-            </button>
-            {notificacionesAbiertas && (
-              <div 
-                className={navStyles.dropdown} 
-                style={{ right: 0, minWidth: '250px', padding: '16px', textAlign: 'center' }}
-                role="menu"
-              >
-                <Bell size={24} color="#a0aec0" style={{ margin: '0 auto 8px' }} />
-                <p style={{ margin: '0 0 4px', fontWeight: 600, color: '#ffffff' }}>Notificaciones</p>
-                <p style={{ margin: 0, fontSize: '13px', color: '#a0aec0' }}>
-                  Próximamente: Historial de alertas y vencimientos.
-                </p>
-              </div>
-            )}
-          </div>
-
-          <div className={navStyles.profileWrapper} ref={dropdownRef}>
-            <button
-              className={navStyles.profileBtn}
-              onClick={() => setDropdownAbierto(v => !v)}
-              aria-expanded={dropdownAbierto}
-              aria-haspopup="menu"
-            >
-              <div className={navStyles.avatar}>{inicial}</div>
-              <span className={navStyles.profileName}>{usuario?.nom_usu}</span>
-              <ChevronDown size={14} className={`${navStyles.chevron} ${dropdownAbierto ? navStyles.chevronOpen : ''}`} />
-            </button>
-
-            {dropdownAbierto && (
-              <div className={navStyles.dropdown} role="menu">
-                <div className={navStyles.dropdownHeader}>
-                  <p className={navStyles.dropdownName}>{usuario?.nom_usu}</p>
-                  <p className={navStyles.dropdownRole}>Estudiante</p>
-                  <p className={navStyles.dropdownEmail}>{usuario?.cor_usu}</p>
-                </div>
-                <hr className={navStyles.divider} />
-                <button
-                  className={`${navStyles.dropdownItem} ${navStyles.dropdownLogout}`}
-                  role="menuitem"
-                  onClick={handleLogout}
-                >
-                  <LogOut size={15} /> Cerrar sesión
-                </button>
-              </div>
-            )}
-          </div>
-
-          <button
-            className={navStyles.menuMovilBtn}
-            onClick={() => setMenuMovil(v => !v)}
-            aria-label={menuMovil ? 'Cerrar menú' : 'Abrir menú'}
-          >
-            {menuMovil ? <X size={22} /> : <Menu size={22} />}
-          </button>
-        </div>
-      </div>
-
-      {menuMovil && (
-        <nav className={navStyles.navMovil} aria-label="Menú móvil">
-          {STUDENT_NAV.map(({ label, to, exact }) => (
-            <NavLink
-              key={to} to={to} end={exact}
-              className={({ isActive }) =>
-                `${navStyles.navMovilLink} ${isActive ? navStyles.navMovilLinkActive : ''}`
-              }
-              onClick={() => setMenuMovil(false)}
-            >{label}</NavLink>
-          ))}
-          <button className={navStyles.navMovilLogout} onClick={handleLogout}>
-            <LogOut size={16} /> Cerrar sesión
-          </button>
-        </nav>
-      )}
-    </header>
-  );
-}

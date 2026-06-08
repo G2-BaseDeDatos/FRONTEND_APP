@@ -74,26 +74,42 @@ export default function MantenimientoFormModal({ articulos, onClose, onSave }) {
                 value={busquedaArt}
                 onChange={(e) => setBusquedaArt(e.target.value)}
               />
-              <select
-                id="id_art"
-                name="id_art"
-                className={styles.formSelect}
-                value={formData.id_art}
-                onChange={handleChange}
-                required
-                size="4"
-                style={{ height: 'auto', padding: 4 }}
+              <div 
+                className={styles.listContainer} 
+                style={{ 
+                  maxHeight: '150px', 
+                  overflowY: 'auto', 
+                  border: '1px solid #e2e8f0', 
+                  borderRadius: '6px',
+                  backgroundColor: '#fff'
+                }}
               >
                 {artsFiltrados.length === 0 ? (
-                  <option disabled>No hay equipos disponibles</option>
+                  <div style={{ padding: '10px', color: '#64748B', textAlign: 'center' }}>
+                    No hay equipos disponibles
+                  </div>
                 ) : (
                   artsFiltrados.map(a => (
-                    <option key={a.ID_ART} value={a.ID_ART} style={{ padding: '6px 10px', borderBottom: '1px solid #f1f5f9' }}>
+                    <div
+                      key={a.ID_ART}
+                      onClick={() => setFormData(prev => ({ ...prev, id_art: a.ID_ART }))}
+                      style={{
+                        padding: '10px 12px',
+                        borderBottom: '1px solid #f1f5f9',
+                        cursor: 'pointer',
+                        backgroundColor: formData.id_art === a.ID_ART ? '#e0f2fe' : 'transparent',
+                        color: formData.id_art === a.ID_ART ? '#0284c7' : '#334155',
+                        fontWeight: formData.id_art === a.ID_ART ? 600 : 400,
+                        transition: 'background-color 0.2s ease'
+                      }}
+                    >
                       {a.COD_ART} - {a.NOM_ART}
-                    </option>
+                    </div>
                   ))
                 )}
-              </select>
+              </div>
+              {/* input oculto para la validacion HTML required */}
+              <input type="hidden" name="id_art" value={formData.id_art} required />
               <p style={{ fontSize: 12, color: '#64748B', marginTop: 4 }}>
                 Solo se muestran equipos en estado "Disponible".
               </p>

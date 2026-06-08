@@ -28,12 +28,14 @@ export default function Toast({ mensaje, tipo = 'exito', onCerrar, duracion = 40
 
   const iconos = {
     exito: <CheckCircle2 size={20} aria-hidden="true" />,
+    success: <CheckCircle2 size={20} aria-hidden="true" />,
     error: <X            size={20} aria-hidden="true" />,
     info:  <CheckCircle2 size={20} aria-hidden="true" />,
   };
 
   const clases = {
     exito: styles.exito,
+    success: styles.exito,
     error: styles.error,
     info:  styles.info,
   };

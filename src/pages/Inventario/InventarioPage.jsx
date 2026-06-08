@@ -15,6 +15,13 @@ import ConfirmModal from '../../components/ConfirmModal/ConfirmModal';
 import { ESTADO_COLORES } from '../../constants/theme';
 import { useAuth } from '../../context/AuthContext';
 
+const BACKEND_URL = import.meta.env.VITE_API_URL || 'http://localhost:3006';
+function resolveImageUrl(url) {
+  if (!url) return null;
+  if (url.startsWith('http://') || url.startsWith('https://')) return url;
+  return `${BACKEND_URL}${url}`;
+}
+
 export default function InventarioPage() {
   const { usuario } = useAuth();
   
@@ -99,11 +106,8 @@ export default function InventarioPage() {
       } else {
         // Crear
         const response = await crearArticulo(formData);
-        idArticuloGenerado = response.data?.newId || response.newId; 
-        // El backend retorna un field ID dependiendo de la estructura
-        if(!idArticuloGenerado && response.data && typeof response.data === 'object' && response.data.ID_ART){
-          idArticuloGenerado = response.data.ID_ART;
-        }
+        // El backend devuelve success con data: { id_art: <nuevo_id> }
+        idArticuloGenerado = response.data?.id_art;
         mostrarToast('Artículo creado exitosamente');
       }
 
@@ -246,8 +250,17 @@ export default function InventarioPage() {
                 return (
                   <tr key={a.ID_ART} className={styles.tr}>
                     <td className={styles.td}>
-                      <div style={{ width: 36, height: 36, borderRadius: 6, background: '#F1F5F9', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <ImageIcon size={18} color="#94A3B8" />
+                      <div style={{ width: 36, height: 36, borderRadius: 6, background: '#F1F5F9', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+                        {resolveImageUrl(a.IMAGEN_URL) ? (
+                          <img 
+                            src={resolveImageUrl(a.IMAGEN_URL)} 
+                            alt={a.NOM_ART}
+                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                            onError={(e) => { e.target.style.display='none'; e.target.parentElement.innerHTML='<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#94A3B8" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>'; }}
+                          />
+                        ) : (
+                          <ImageIcon size={18} color="#94A3B8" />
+                        )}
                       </div>
                     </td>
                     <td className={styles.td}>{a.COD_ART}</td>

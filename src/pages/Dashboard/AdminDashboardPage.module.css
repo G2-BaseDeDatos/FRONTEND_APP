@@ -3,8 +3,8 @@
 .layout {
   display: flex;
   min-height: 100vh;
-  background-color: #13131a;
-  color: #ffffff;
+  background-color: #F8FAFC;
+  color: #0F172A;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
@@ -13,7 +13,7 @@
   display: flex;
   flex-direction: column;
   min-width: 0;
-  background-color: #13131a;
+  background-color: #F8FAFC;
 }
 
 .content {
@@ -34,11 +34,11 @@
 
 /* ── Tarjetas Base ──────────────────────────────────────────────────────────── */
 .card {
-  background-color: #171821;
+  background-color: #ffffff;
   border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid #E2E8F0;
   padding: 24px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   position: relative;
@@ -60,13 +60,13 @@
 .cardTitle {
   font-size: 16px;
   font-weight: 600;
-  color: #ffffff;
+  color: #0F172A;
   margin: 0;
 }
 
 .cardSubtitle {
   font-size: 12px;
-  color: #a0aec0;
+  color: #64748B;
   margin: 0;
 }
 
@@ -86,10 +86,10 @@
 }
 
 .miniCard {
-  background: rgba(255, 255, 255, 0.02);
+  background: #ffffff;
   border-radius: 12px;
   padding: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.04);
+  border: 1px solid #E2E8F0;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -97,7 +97,7 @@
 }
 
 .miniCard:hover {
-  background: rgba(255, 255, 255, 0.04);
+  background: #F1F5F9;
   transform: translateY(-1px);
 }
 
@@ -119,13 +119,13 @@
 .miniCardValue {
   font-size: 20px;
   font-weight: 700;
-  color: #ffffff;
+  color: #0F172A;
   margin: 0;
 }
 
 .miniCardLabel {
   font-size: 13px;
-  color: #a0aec0;
+  color: #64748B;
   font-weight: 500;
 }
 
@@ -160,8 +160,8 @@
 
 .table th {
   padding: 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  color: #a0aec0;
+  border-bottom: 1px solid #E2E8F0;
+  color: #64748B;
   font-weight: 500;
   text-transform: uppercase;
   font-size: 11px;
@@ -170,19 +170,19 @@
 
 .table td {
   padding: 14px 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-  color: #ffffff;
+  border-bottom: 1px solid #F1F5F9;
+  color: #1E293B;
   vertical-align: middle;
 }
 
 .table tr:hover td {
-  background-color: rgba(255, 255, 255, 0.01);
+  background-color: #F8FAFC;
 }
 
 .progressBarContainer {
   width: 100%;
   height: 6px;
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: #E2E8F0;
   border-radius: 3px;
   overflow: hidden;
   max-width: 120px;
@@ -212,12 +212,12 @@
 .earningsValue {
   font-size: 28px;
   font-weight: 700;
-  color: #ffffff;
+  color: #0F172A;
 }
 
 .earningsText {
   font-size: 13px;
-  color: #a0aec0;
+  color: #64748B;
   line-height: 1.5;
 }
 
@@ -235,7 +235,7 @@
   bottom: 0;
   font-size: 18px;
   font-weight: 700;
-  color: #ffffff;
+  color: #0F172A;
 }
 
 /* ── Gráficos ───────────────────────────────────────────────────────────────── */
@@ -252,9 +252,9 @@
   justify-content: center;
   padding: 60px 20px;
   gap: 16px;
-  background-color: #171821;
+  background-color: #ffffff;
   border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid #E2E8F0;
   text-align: center;
 }
 
@@ -272,13 +272,13 @@
 .placeholderTitle {
   font-size: 20px;
   font-weight: 600;
-  color: #ffffff;
+  color: #0F172A;
   margin: 0;
 }
 
 .placeholderDesc {
   font-size: 14px;
-  color: #a0aec0;
+  color: #64748B;
   max-width: 400px;
   margin: 0;
   line-height: 1.5;
@@ -293,9 +293,9 @@
 
 .profileCardLeft {
   grid-column: span 4;
-  background-color: #171821;
+  background-color: #ffffff;
   border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid #E2E8F0;
   padding: 24px;
   display: flex;
   flex-direction: column;
@@ -321,7 +321,7 @@
 .profileNameLarge {
   font-size: 20px;
   font-weight: 700;
-  color: #ffffff;
+  color: #0F172A;
   margin: 0;
 }
 
@@ -336,9 +336,9 @@
 
 .profileCardRight {
   grid-column: span 8;
-  background-color: #171821;
+  background-color: #ffffff;
   border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid #E2E8F0;
   padding: 24px;
 }
 
@@ -352,15 +352,15 @@
 .formLabel {
   font-size: 13px;
   font-weight: 500;
-  color: #a0aec0;
+  color: #64748B;
 }
 
 .formInput {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: #ffffff;
+  border: 1px solid #E2E8F0;
   padding: 12px;
   border-radius: 8px;
-  color: #ffffff;
+  color: #1E293B;
   font-size: 14px;
 }
 
